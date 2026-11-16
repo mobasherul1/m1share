@@ -4,13 +4,15 @@ Free code signing provided by SignPath.io, certificate by SignPath Foundation
 
 ## Status
 
-**UI only for now — no signed exe yet.**
+**v1.0.0 source is in this repo — no signed exe yet, no release yet, no SignPath application yet.**
 
-This repo currently contains only the sender and receiver UI pages (sender v48, receiver v14). The working Windows `.exe` source will be added later. No binaries are signed yet, and no signing request will be submitted until all of the conditions below are met.
+The working Windows `.exe` source is now in this repo: `app.py` v1.0.0 (Python), `M1 Share.spec` (PyInstaller), `M1 Share.version`, `web/` sender + receiver pages, and `.github/workflows/build.yml` which builds the exe on GitHub-hosted `windows-latest` runners and smoke-tests it. The sender / receiver UI designs (sender v48, receiver v14, STABLE) are also in this repo.
 
-## What will be signed (once the exe source is added)
+No binaries are signed yet, and no signing request will be submitted until a v1.0.0 release is tagged and the project is approved by SignPath Foundation.
 
-- Only M1share's own Windows `.exe` / installer, built from this public repo's source code.
+## What will be signed
+
+- Only M1 Share's own Windows `.exe`, built from this public repo's source code.
 - Only artifacts built by GitHub Actions on GitHub-hosted runners, from a tagged release of this repo.
 - No locally-built binaries will ever be submitted for signing.
 - No binaries from other projects will be signed with this subscription.
