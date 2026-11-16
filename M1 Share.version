@@ -1,0 +1,28 @@
+# UTF-8
+VSVersionInfo(
+  ffi=FixedFileInfo(
+    filevers=(1, 0, 0, 0),
+    prodvers=(1, 0, 0, 0),
+    mask=0x3F,
+    flags=0x0,
+    OS=0x00040004,
+    fileType=0x01,
+    subtype=0x0,
+    date=(0, 0),
+  ),
+  kids=[
+    StringFileInfo([
+      StringTable('040904b0', [
+        StringStruct('CompanyName', 'Md. Mobasherul Hasan'),
+        StringStruct('FileDescription', 'M1 Share — file sharing over your Wi-Fi / router'),
+        StringStruct('FileVersion', '1.0.0.0'),
+        StringStruct('InternalName', 'M1 Share'),
+        StringStruct('LegalCopyright', '© 2026 Md. Mobasherul Hasan. All rights reserved.'),
+        StringStruct('OriginalFilename', 'M1 Share.exe'),
+        StringStruct('ProductName', 'M1 Share'),
+        StringStruct('ProductVersion', '1.0.0.0'),
+      ]),
+    ]),
+    VarFileInfo([VarStruct('Translation', [1033, 1200])]),
+  ],
+)

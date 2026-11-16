@@ -1,0 +1,724 @@
+<body>
+<div class="wrap">
+
+  <header class="site-head">
+    <img class="logo" src="/assets/m1share-logo-horizontal.jpg" alt="M1 Share" />
+    <div class="head-right">
+      <span class="pill pill-on" id="sharingPill"><span class="dot" aria-hidden="true"></span>Sharing on</span>
+      <span class="head-addr" id="headAddr">…</span>
+    </div>
+  </header>
+
+  <!-- ============ 1 · START SCREEN: name first, then login-code check ============ -->
+  <section class="card code-card" id="codeView" aria-labelledby="codeTitle">
+    <img class="code-logo" src="/assets/m1share-logo-stacked.png" alt="M1 Share" />
+    <h1 class="card-title" id="codeTitle">Files shared with you</h1>
+    <p class="code-intro">Someone on this Wi-Fi is sharing files with M1 Share. First enter your name — the sender sees it on their screen — then open the files.</p>
+    <div class="code-form">
+
+      <!-- step 1 · receiver name -->
+      <div id="nameStep">
+        <label class="field-label" for="nameInput">Your name</label>
+        <input class="text-input" id="nameInput" type="text" autocomplete="name" placeholder="Type your name" maxlength="40" />
+        <p class="name-error" id="nameError" hidden>Please enter your name first.</p>
+        <button class="btn btn-blue btn-block" id="saveNameBtn" type="button">Save name</button>
+      </div>
+      <div class="saved-row" id="savedRow" hidden>
+        <p class="saved-line">Name saved — the sender can see <strong id="savedNameText"></strong></p>
+        <button class="btn btn-ghost btn-small" id="changeNameBtn" type="button">Change name</button>
+      </div>
+
+      <!-- blocked by the sender: the files stay closed, even with the right code -->
+      <p class="blocked-notice" id="blockedNotice" tabindex="-1" hidden>You are blocked by the sender. kindly ask the sender to unblock you.</p>
+
+      <!-- sharing switched off by the sender -->
+      <p class="blocked-notice" id="sharingOffNotice" tabindex="-1" hidden>Sharing is off — the sender has closed the share. Check back when they turn it on again.</p>
+      <!-- session closed (e.g. the sender turned the login code on) -->
+      <p class="blocked-notice" id="sessionClosedNotice" tabindex="-1" hidden>Your session was closed — the sender turned the login code on. Sign in again to continue.</p>
+
+      <!-- step 2 · shown only after the name is saved -->
+      <div class="step-gap" id="afterName" hidden>
+        <div id="codeStep" hidden>
+          <p class="code-ask">The sender set a login code for this share. Enter it to open the files.</p>
+          <label class="field-label" for="codeInput">Login code</label>
+          <input class="text-input code-input" id="codeInput" type="text" autocomplete="off" spellcheck="false" placeholder="Code" maxlength="8" />
+          <p class="name-error" id="codeError" hidden>Kindly get the code form sender</p>
+          <button class="btn btn-primary btn-block" id="unlockBtn" type="button">Unlock files</button>
+          <p class="code-hint">The code is whatever the sender set — it changes every time they generate a new one.</p>
+        </div>
+        <button class="btn btn-primary btn-block" id="openFilesBtn" type="button" hidden>Open files</button>
+      </div>
+
+    </div>
+    <p class="code-note">The files open on this Wi-Fi only, while sharing is on. Your downloads come straight from the sender’s PC — not the internet.</p>
+  </section>
+
+  <!-- ============ 2 · FILES SCREEN ============ -->
+  <div id="filesView" hidden>
+
+    <section class="card" aria-labelledby="filesTitle">
+      <div class="card-head">
+        <span class="card-ic" aria-hidden="true">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4l2 2.5h9A1.5 1.5 0 0 1 21 9v8.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Z" fill="#2f6db3" opacity=".18"/><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4l2 2.5h9A1.5 1.5 0 0 1 21 9v8.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Z" stroke="#2f6db3" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <h1 class="card-title" id="filesTitle">Files shared with you</h1>
+          <p class="card-sub">Tick what you want, then download. Unticked files stay on the sender’s PC.</p>
+        </div>
+      </div>
+      <p class="receiver-line" id="receiverLine" hidden></p>
+
+      <div class="browser-bar">
+        <button class="back-btn" id="backBtn" type="button" aria-label="Back to the folder before" disabled>&#8592;</button>
+        <nav class="path-boxes" id="pathBar" aria-label="Folder path"></nav>
+        <div class="sort-wrap">
+          <select class="sort-select" id="sortSelect" aria-label="Sort files">
+            <option value="name-asc">Name A → Z</option>
+            <option value="name-desc">Name Z → A</option>
+            <option value="mod-desc">New → Old</option>
+            <option value="mod-asc">Old → New</option>
+            <option value="size-asc">Size S → B</option>
+            <option value="size-desc">Size B → S</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mains-bar" id="mainsBar" hidden></div>
+
+      <div class="rows" id="bList"></div>
+      <p class="b-empty" id="bEmpty" hidden>This folder is empty.</p>
+      <p class="status-line" id="statusLine"></p>
+      <p class="sel-summary" id="selSummary"></p>
+
+      <p class="dl-label" id="dlLabel">Download</p>
+      <div class="dl-btns">
+        <button class="btn btn-primary" id="dlTickedBtn" type="button">Download ticked</button>
+        <button class="btn btn-blue" id="dlAllBtn" type="button">Download all files</button>
+      </div>
+      <p class="dl-note">Downloads run in order: <strong>main folder files first</strong>, then the files inside sub-folders. Every file downloads as itself, one by one — there is no ZIP.</p>
+
+      <div class="get-panel" id="getPanel" hidden>
+        <p class="get-h">Your downloads</p>
+        <div id="getList"></div>
+        <div class="get-total"><span>Total</span><span id="getTotal"></span></div>
+        <p class="all-done" id="allDone">All downloads started — check your browser’s download list. Keep this page open on this Wi-Fi until they finish.</p>
+      </div>
+
+      <div class="lock-row">
+        <button class="lock-btn" id="lockBtn" type="button">Back to the start screen</button>
+      </div>
+    </section>
+
+    <details class="more">
+      <summary>
+        <span class="card-ic" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2f6db3" stroke-width="1.8"/><path d="M12 11v5.5" stroke="#2f6db3" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.4" fill="#2f6db3"/></svg>
+        </span>
+        <span class="card-title">How downloading works</span>
+        <span class="chev" aria-hidden="true">&#9662;</span>
+      </summary>
+      <div class="more-body">
+        <p><strong>Stay on this Wi-Fi.</strong> Downloads come straight from the sender’s PC over your router, not the internet. If a download stops, the sender may have closed the share or switched sharing off — ask them.</p>
+        <p><strong>Ticking.</strong> Every file and folder has a tick box. Tick a folder and everything inside it is ticked; untick one file inside and the folder shows a part-ticked mark. Only ticked files are sent to your downloads.</p>
+        <p><strong>Download ticked.</strong> Only the ticked files download, one by one — files in the main folder first, then the ticked files inside sub-folders — each one as itself.</p>
+        <p><strong>Download all files.</strong> Every file in the share downloads, one by one, in the same order. There is no ZIP option: your browser saves each file itself.</p>
+        <p><strong>One download at a time.</strong> Your browser asks for each file in turn. If it asks “allow multiple downloads?”, choose Allow.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="card about" aria-label="About us">
+    <p>M1 Share — created by <a href="https://bd.linkedin.com/in/mobasherul1" target="_blank" rel="noopener">Md. Mobasherul Hasan</a>.</p>
+    <p>&copy; 2026 <a href="https://bd.linkedin.com/in/mobasherul1" target="_blank" rel="noopener">Md. Mobasherul Hasan</a>. All rights reserved.</p>
+    <p>GitHub — <a href="https://github.com/mobasherul1" target="_blank" rel="noopener">github.com/mobasherul1</a></p>
+    <p style="text-align:center;color:var(--faint);font-size:12.5px;margin-top:10px">Release v1.0.0</p>
+  </section>
+
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  var FOLDER_SVG = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4l2 2.5h9A1.5 1.5 0 0 1 21 9v8.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Z" fill="#2f6db3" opacity=".9"/></svg>';
+  var FILE_SVG = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2.5h8L19 7.5v14H6v-19Z" stroke="#9a9a96" stroke-width="1.6" stroke-linejoin="round"/><path d="M13.5 2.5v5.5H19" stroke="#9a9a96" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+
+  /* ---------- tiny helpers ---------- */
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2600);
+  }
+  function fmtSize(bytes){
+    if (bytes >= 1024 * 1024 * 1024) return (Math.round(bytes / (1024*1024*1024) * 10) / 10) + ' GB';
+    if (bytes >= 1024 * 1024) return (Math.round(bytes / (1024*1024))) + ' MB';
+    if (bytes >= 1024) return (Math.round(bytes / 1024)) + ' KB';
+    return (bytes || 0) + ' B';
+  }
+  function api(path, options){
+    options = options || {};
+    options.headers = Object.assign({ 'X-Session': sessionToken || '' }, options.headers || {});
+    if (options.body && typeof options.body !== 'string') {
+      options.headers['Content-Type'] = 'application/json';
+      options.body = JSON.stringify(options.body);
+    }
+    return fetch(path, options).then(function(r){
+      return r.json().catch(function(){ return {}; }).then(function(j){ return { status: r.status, body: j }; });
+    });
+  }
+
+  /* ---------- state ---------- */
+  var bootstrap = { sharing_on: true, code_required: true, download_mode: 'single', address: '' };
+  var sessionToken = null;
+  try { sessionToken = sessionStorage.getItem('m1share.token'); } catch (e) {}
+  var receiverName = '';
+  var ROOTS = [];            // the shared forest, receiver-filtered by the server
+  var pathStack = [];        // nodes from a root down to the folder being viewed
+  var sortMode = 'name-asc';
+  var heartbeatTimer = null;
+
+  var $ = function(id){ return document.getElementById(id); };
+  var codeView = $('codeView'), filesView = $('filesView');
+  var nameStep = $('nameStep'), savedRow = $('savedRow'), afterName = $('afterName');
+  var codeStep = $('codeStep'), openFilesBtn = $('openFilesBtn');
+  var blockedNotice = $('blockedNotice'), sharingOffNotice = $('sharingOffNotice');
+  var sessionClosedNotice = $('sessionClosedNotice');
+  var gateOpen = false;         // true while the files view is open
+  var currentDoing = 'Viewing files';
+  var gateWatch = null;         // re-check timer for the sharing-off / session-closed gate
+
+  function setSharingPill(on){
+    var pill = $('sharingPill');
+    pill.innerHTML = '<span class="dot" aria-hidden="true"></span>' + (on ? 'Sharing on' : 'Sharing off');
+    pill.classList.toggle('pill-on', !!on);
+    pill.style.background = on ? 'var(--badge)' : '#d92d20';
+    pill.style.color = on ? 'var(--badge-ink)' : '#fff';
+  }
+
+  function showGate(reason){
+    // reason: 'blocked' | 'sharing_off' | 'session' | null — back to the start screen
+    if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
+    if (gateWatch) { clearInterval(gateWatch); gateWatch = null; }
+    gateOpen = false;
+    filesView.hidden = true;
+    codeView.hidden = false;
+    blockedNotice.hidden = reason !== 'blocked';
+    sharingOffNotice.hidden = reason !== 'sharing_off';
+    sessionClosedNotice.hidden = reason !== 'session';
+    if (reason === 'sharing_off'){
+      // fully closed gate — only the notice, nothing interactive until sharing returns
+      nameStep.hidden = true;
+      savedRow.hidden = true;
+      afterName.hidden = true;
+      codeStep.hidden = true;
+      openFilesBtn.hidden = true;
+    } else if (reason === 'blocked' || reason === 'session'){
+      // the session was dropped — present a fresh sign-in, notice stays visible
+      nameStep.hidden = false;
+      savedRow.hidden = true;
+      afterName.hidden = true;
+      codeStep.hidden = true;
+      openFilesBtn.hidden = true;
+      $('nameInput').value = '';
+    }
+    $('nameInput').focus();
+    window.scrollTo(0, 0);
+    // sharing off resolves by itself — re-check; session-closed just asks the user to sign in again
+    if (reason === 'sharing_off') startGateWatch();
+  }
+  function stopGateWatch(){
+    if (gateWatch){ clearInterval(gateWatch); gateWatch = null; }
+  }
+  /* poll the server until sharing is back — then let the receiver sign in again */
+  function startGateWatch(){
+    if (gateWatch) clearInterval(gateWatch);
+    gateWatch = setInterval(function(){
+      fetch('/api/bootstrap').then(function(r){ return r.json(); }).then(function(b){
+        bootstrap = b || bootstrap;
+        if (bootstrap.sharing_on){
+          clearInterval(gateWatch); gateWatch = null;
+          sharingOffNotice.hidden = true;
+          sessionClosedNotice.hidden = true;
+          nameStep.hidden = false;           // sign in again — fresh session
+          savedRow.hidden = true;
+          afterName.hidden = true;
+          codeStep.hidden = true;
+          openFilesBtn.hidden = true;
+          toast('Sharing is back — sign in to open the files');
+        }
+      }).catch(function(){ /* still down — keep watching */ });
+    }, 4000);
+  }
+
+  /* ---------- step 1 · name ---------- */
+  function saveName(){
+    var name = $('nameInput').value.trim();
+    if (!name){ $('nameError').hidden = false; $('nameInput').focus(); return; }
+    $('nameError').hidden = true;
+    // always branch on the server's CURRENT settings, not the page-load snapshot
+    fetch('/api/bootstrap').then(function(r){ return r.json(); }).then(function(b){
+      bootstrap = b || bootstrap;
+      if (bootstrap.sharing_on === false){ showGate('sharing_off'); return; }
+      api('/api/join', { method: 'POST', body: { name: name } }).then(function(res){
+        stopGateWatch();   // a sign-in is progressing — no gate watcher may clobber it
+        if (res.body.rate_limited){
+          $('nameError').hidden = false;
+          $('nameError').textContent = 'Too many tries — wait a few minutes, then try again.';
+          return;
+        }
+        receiverName = name;
+        $('savedNameText').textContent = name;
+        nameStep.hidden = true;
+        savedRow.hidden = false;
+        afterName.hidden = false;
+        blockedNotice.hidden = !res.body.blocked;
+        sharingOffNotice.hidden = res.body.sharing_on !== false;
+        if (res.body.blocked || res.body.sharing_on === false){
+          codeStep.hidden = true;
+          openFilesBtn.hidden = true;
+          return;
+        }
+        if (bootstrap.code_required){
+          codeStep.hidden = false;
+          openFilesBtn.hidden = true;
+          $('codeInput').value = '';
+          $('codeInput').focus();
+        } else {
+          codeStep.hidden = true;
+          openFilesBtn.hidden = false;
+          openFilesBtn.focus();
+        }
+        toast('Name saved');
+      });
+    });
+  }
+  $('saveNameBtn').addEventListener('click', saveName);
+  $('nameInput').addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); saveName(); } });
+  $('nameInput').addEventListener('input', function(){ $('nameError').hidden = true; });
+  $('changeNameBtn').addEventListener('click', function(){
+    savedRow.hidden = true;
+    afterName.hidden = true;
+    nameStep.hidden = false;
+    $('nameInput').focus();
+    $('nameInput').select();
+  });
+
+  /* ---------- step 2 · open the files ---------- */
+  function applyDownloadMode(){
+    var single = bootstrap.download_mode !== 'all';
+    $('dlTickedBtn').style.display = single ? '' : 'none';
+    $('dlAllBtn').style.display = single ? 'none' : '';
+    $('dlLabel').textContent = single ? 'Download ticked files' : 'Download all files';
+  }
+  function openFiles(token){
+    sessionToken = token || sessionToken;
+    stopGateWatch();
+    try {
+      sessionStorage.setItem('m1share.token', sessionToken);
+      sessionStorage.setItem('m1share.name', receiverName);
+    } catch (e) {}
+    gateOpen = true;
+    applyDownloadMode();
+    codeView.hidden = true;
+    filesView.hidden = false;
+    var line = $('receiverLine');
+    line.hidden = false;
+    line.innerHTML = '';
+    line.appendChild(document.createTextNode('You are downloading as '));
+    var strong = document.createElement('strong');
+    strong.textContent = receiverName;
+    line.appendChild(strong);
+    loadTree(true);
+    startHeartbeat();
+    window.scrollTo(0, 0);
+    toast('Files are open');
+  }
+  function unlock(useCode){
+    var body = { name: receiverName };
+    if (useCode) body.code = $('codeInput').value.trim().toUpperCase();
+    api(useCode ? '/api/unlock' : '/api/open', { method: 'POST', body: body }).then(function(res){
+      var s = res.body.status;
+      if (s === 'ok'){ $('codeError').hidden = true; openFiles(res.body.token); return; }
+      if (s === 'wrong'){
+        if (useCode){
+          $('codeError').hidden = false;
+          $('codeError').textContent = 'Kindly get the code form sender';
+          $('codeInput').focus(); $('codeInput').select();
+        } else {
+          // clicked "Open files" but the sender turned the code on since page load
+          refreshGateFromBootstrap();
+        }
+        return;
+      }
+      if (s === 'locked'){
+        $('codeError').hidden = false;
+        $('codeError').textContent = 'Too many wrong codes — wait 5 minutes, then try again.';
+        return;
+      }
+      if (s === 'blocked'){ showGate('blocked'); return; }
+      if (s === 'sharing_off'){ showGate('sharing_off'); return; }
+      if (s === 'no_code'){
+        // sender keeps the code ON but the code itself is empty — say so, don't fake a prompt
+        $('codeError').hidden = false;
+        $('codeError').textContent = 'The sender has no code set right now — ask them to set one, or wait for them to generate one.';
+        return;
+      }
+      toast('Something went wrong — try again');
+    });
+  }
+  /* re-sync the gate with the server (e.g. code turned on after page load) */
+  function refreshGateFromBootstrap(){
+    fetch('/api/bootstrap').then(function(r){ return r.json(); }).then(function(b){
+      bootstrap = b || bootstrap;
+      if (bootstrap.sharing_on === false){ showGate('sharing_off'); return; }
+      if (bootstrap.code_required){
+        codeStep.hidden = false;
+        openFilesBtn.hidden = true;
+        $('codeError').textContent = 'The sender just turned the login code on — enter it to continue.';
+        $('codeError').hidden = false;
+        $('codeInput').value = '';
+        $('codeInput').focus();
+      }
+    }).catch(function(){});
+  }
+  $('unlockBtn').addEventListener('click', function(){ unlock(true); });
+  $('codeInput').addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); unlock(true); } });
+  $('codeInput').addEventListener('input', function(){
+    var up = this.value.toUpperCase();
+    if (up !== this.value) this.value = up;
+    $('codeError').hidden = true;
+  });
+  openFilesBtn.addEventListener('click', function(){ unlock(false); });
+  $('lockBtn').addEventListener('click', function(){ showGate(null); });
+
+  /* ---------- file tree ---------- */
+  function folderFiles(folder){
+    var out = [];
+    (folder.children || []).forEach(function(c){
+      if (c.type === 'file') out.push(c);
+      else out = out.concat(folderFiles(c));
+    });
+    return out;
+  }
+  function setWant(node, val){
+    if (node.type === 'file'){ node.want = val; return; }
+    (node.children || []).forEach(function(c){ setWant(c, val); });
+  }
+  function tickState(node){
+    if (node.type === 'file') return node.want ? 'all' : 'none';
+    var files = folderFiles(node);
+    if (!files.length) return 'none';
+    var on = files.filter(function(f){ return f.want; }).length;
+    if (on === 0) return 'none';
+    if (on === files.length) return 'all';
+    return 'some';
+  }
+  function initWantFlags(nodes){
+    (nodes || []).forEach(function walk(n){
+      if (n.type === 'file'){ if (n.want === undefined) n.want = true; return; }
+      (n.children || []).forEach(walk);
+    });
+  }
+  function currentFolder(){ return pathStack[pathStack.length - 1] || null; }
+
+  function sortedChildren(folder){
+    var folders = folder.children.filter(function(c){ return c.type === 'folder'; });
+    var files = folder.children.filter(function(c){ return c.type === 'file'; });
+    function byName(a, b){ return a.name.localeCompare(b.name); }
+    function sizeOf(n){ return n.type === 'file' ? n.size : n.size; }
+    function cmp(a, b){
+      switch (sortMode){
+        case 'name-desc': return byName(b, a);
+        case 'mod-asc': return (a.modKey||0) - (b.modKey||0);
+        case 'mod-desc': return (b.modKey||0) - (a.modKey||0);
+        case 'size-asc': return sizeOf(a) - sizeOf(b);
+        case 'size-desc': return sizeOf(b) - sizeOf(a);
+        default: return byName(a, b);
+      }
+    }
+    folders.sort(cmp); files.sort(cmp);
+    return folders.concat(files);
+  }
+
+  /* main-folder switcher — shown only when the sender shares more than one root */
+  function renderMainChips(){
+    var bar = $('mainsBar');
+    if (ROOTS.length <= 1){ bar.hidden = true; bar.innerHTML = ''; return; }
+    bar.hidden = false;
+    bar.innerHTML = '';
+    ROOTS.forEach(function(r){
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'main-chip' + (pathStack.length && pathStack[0] === r ? ' is-active' : '');
+      chip.textContent = r.name;
+      chip.setAttribute('aria-pressed', pathStack.length && pathStack[0] === r ? 'true' : 'false');
+      chip.addEventListener('click', function(){
+        pathStack = [r];
+        renderBrowser();
+      });
+      bar.appendChild(chip);
+    });
+  }
+
+  function renderBrowser(){
+    var folder = currentFolder();
+    renderMainChips();
+    var pathBar = $('pathBar');
+    pathBar.innerHTML = '';
+    if (!folder){
+      $('bList').innerHTML = '';
+      $('bEmpty').hidden = false;
+      $('bEmpty').textContent = ROOTS.length ? 'This folder is empty.' : 'Nothing is shared right now — the sender has unticked every file.';
+      $('statusLine').textContent = '';
+      $('selSummary').innerHTML = '';
+      $('dlTickedBtn').disabled = true;
+      $('dlAllBtn').disabled = true;
+      return;
+    }
+    pathStack.forEach(function(node, i){
+      if (i > 0){
+        var sep = document.createElement('span');
+        sep.className = 'path-sep'; sep.textContent = '›'; sep.setAttribute('aria-hidden', 'true');
+        pathBar.appendChild(sep);
+      }
+      var box = document.createElement('button');
+      box.type = 'button';
+      box.className = 'path-box' + (i === pathStack.length - 1 ? ' current' : '');
+      box.textContent = node.name;
+      box.setAttribute('aria-label', 'Go to folder ' + node.name);
+      (function(idx){
+        box.addEventListener('click', function(){ pathStack = pathStack.slice(0, idx + 1); renderBrowser(); });
+      })(i);
+      pathBar.appendChild(box);
+    });
+    $('backBtn').disabled = pathStack.length <= 1;
+
+    var bList = $('bList');
+    bList.innerHTML = '';
+    var items = sortedChildren(folder);
+    $('bEmpty').hidden = items.length > 0;
+    $('bEmpty').textContent = 'This folder is empty.';
+    items.forEach(function(node){
+      var state = tickState(node);
+      var row = document.createElement('div');
+      row.className = 'b-row' + (state === 'none' ? ' is-off' : '');
+
+      var tickLabel = document.createElement('label');
+      tickLabel.className = 'tick';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.setAttribute('aria-label', 'Tick ' + node.name + ' for download');
+      cb.checked = state === 'all';
+      cb.indeterminate = state === 'some';
+      if (state === 'some') cb.classList.add('partial');
+      cb.addEventListener('change', function(){
+        setWant(node, state !== 'all');
+        renderBrowser();
+      });
+      tickLabel.appendChild(cb);
+      row.appendChild(tickLabel);
+
+      var main = document.createElement('button');
+      main.type = 'button';
+      main.className = 'b-main';
+      var files = node.type === 'folder' ? folderFiles(node) : null;
+      var sub = node.type === 'folder'
+        ? files.length + (files.length === 1 ? ' file' : ' files') + ' inside'
+        : (node.mod || '');
+      main.innerHTML =
+        '<span class="b-ic">' + (node.type === 'folder' ? FOLDER_SVG : FILE_SVG) + '</span>' +
+        '<span class="b-text"><span class="b-name"></span><span class="b-sub"></span></span>' +
+        '<span class="b-meta"><strong></strong>' + (node.type === 'folder' ? 'folder' : '') + '</span>' +
+        (node.type === 'folder' ? '<span class="b-enter" aria-hidden="true">›</span>' : '');
+      main.querySelector('.b-name').textContent = node.name;
+      main.querySelector('.b-sub').textContent = sub;
+      main.querySelector('.b-meta strong').textContent = fmtSize(node.size);
+      if (node.type === 'folder'){
+        main.setAttribute('aria-label', 'Open folder ' + node.name);
+        main.addEventListener('click', function(){ pathStack.push(node); renderBrowser(); });
+      } else {
+        main.classList.add('static');
+        main.addEventListener('click', function(){
+          setWant(node, !node.want);
+          renderBrowser();
+        });
+      }
+      row.appendChild(main);
+      bList.appendChild(row);
+    });
+
+    var fCount = (folder.children || []).filter(function(c){ return c.type === 'folder'; }).length;
+    var fileCount = (folder.children || []).filter(function(c){ return c.type === 'file'; }).length;
+    $('statusLine').textContent =
+      fCount + (fCount === 1 ? ' folder' : ' folders') + ' · ' +
+      fileCount + (fileCount === 1 ? ' file' : ' files') + ' · ' +
+      fmtSize(folder.size || 0) + ' in this folder';
+
+    var all = [];
+    ROOTS.forEach(function(r){ all = all.concat(folderFiles(r)); });
+    var on = all.filter(function(f){ return f.want; });
+    var onSize = on.reduce(function(s, f){ return s + (f.size || 0); }, 0);
+    $('selSummary').innerHTML = on.length === 0
+      ? 'Nothing ticked — tick at least one file to download.'
+      : '<strong>' + on.length + (on.length === 1 ? ' file' : ' files') + ' ticked</strong> · ' + fmtSize(onSize);
+    $('dlTickedBtn').disabled = on.length === 0;
+    $('dlAllBtn').disabled = all.length === 0;
+  }
+  $('backBtn').addEventListener('click', function(){ if (pathStack.length > 1){ pathStack.pop(); renderBrowser(); } });
+  $('sortSelect').addEventListener('change', function(){ sortMode = this.value; renderBrowser(); });
+
+  function loadTree(reset){
+    api('/api/tree').then(function(res){
+      if (res.status === 403){
+        var why = res.body.sharing_on === false ? 'sharing_off'
+                : res.body.session_closed ? 'session'
+                : 'blocked';
+        showGate(why);
+        return;
+      }
+      ROOTS = res.body.roots || [];
+      initWantFlags(ROOTS);
+      if (reset || !currentFolder()){
+        pathStack = ROOTS.length ? [ROOTS[0]] : [];
+      }
+      bootstrap.download_mode = res.body.download_mode || bootstrap.download_mode;
+      applyDownloadMode();
+      renderBrowser();
+    });
+  }
+
+  /* ---------- downloads ---------- */
+  var getList = $('getList'), getTotal = $('getTotal'), allDone = $('allDone'), getPanel = $('getPanel');
+  var dlTimers = [];
+  function clearGetPanel(){
+    dlTimers.forEach(clearTimeout); dlTimers = [];
+    getPanel.hidden = true;
+    getList.innerHTML = '';
+    allDone.classList.remove('show');
+  }
+  function collectByDepth(wantOnly){
+    var found = [];
+    var multi = ROOTS.length > 1;
+    ROOTS.forEach(function walkRoot(root){
+      (function walk(folder, prefix, depth){
+        (folder.children || []).forEach(function(c){
+          if (c.type === 'file'){
+            if (!wantOnly || c.want) found.push({ file: c, path: prefix + c.name, depth: depth });
+          } else {
+            walk(c, prefix + c.name + '/', depth + 1);
+          }
+        });
+      })(root, multi ? root.name + '/' : '', 0);
+    });
+    found.sort(function(a, b){ return a.depth - b.depth; });
+    return found;
+  }
+  function setDoing(text){
+    currentDoing = text;
+    api('/api/heartbeat', { method: 'POST', body: { doing: text } });
+  }
+  function startDownloads(items){
+    clearGetPanel();
+    if (!items.length){ toast('Tick at least one file first'); return; }
+    getPanel.hidden = false;
+    var total = items.reduce(function(s, it){ return s + (it.file.size || 0); }, 0);
+    getTotal.textContent = fmtSize(total);
+
+    items.forEach(function(it){
+      var el = document.createElement('div');
+      el.className = 'get-item';
+      el.innerHTML =
+        '<div class="get-top">' +
+          '<span class="get-ic">' + FILE_SVG + '</span>' +
+          '<span class="get-text"><span class="get-name"></span><span class="get-files"></span></span>' +
+          '<span class="get-size">' + fmtSize(it.file.size || 0) + '</span>' +
+          '<span class="get-state wait">Waiting</span>' +
+        '</div>';
+      el.querySelector('.get-name').textContent = it.file.name;
+      el.querySelector('.get-files').textContent = it.depth === 0 ? 'Main folder' : 'Sub-folder — ' + it.path;
+      getList.appendChild(el);
+      it.stateEl = el.querySelector('.get-state');
+    });
+
+    setDoing('Downloading files');
+    // stagger the downloads: the sender's PC and the browser both cope better
+    items.forEach(function(it, i){
+      dlTimers.push(setTimeout(function(){
+        if (!gateOpen){   // kicked/blocked/logged out before this slot fired
+          it.stateEl.textContent = 'Stopped';
+          return;
+        }
+        var a = document.createElement('a');
+        a.href = '/api/download?id=' + encodeURIComponent(it.file.id) + '&t=' + encodeURIComponent(sessionToken);
+        a.download = it.file.name;
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        it.stateEl.textContent = 'Started';
+        it.stateEl.className = 'get-state done';
+        if (i === items.length - 1){
+          allDone.classList.add('show');
+          toast('Downloads started — check your browser');
+          dlTimers.push(setTimeout(function(){ setDoing('Viewing files'); }, 8000));
+        }
+      }, 350 * i));
+    });
+    getPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  $('dlTickedBtn').addEventListener('click', function(){ startDownloads(collectByDepth(true)); });
+  $('dlAllBtn').addEventListener('click', function(){ startDownloads(collectByDepth(false)); });
+
+  /* ---------- heartbeat: blocked / sharing-off kick the receiver out ---------- */
+  function startHeartbeat(){
+    if (heartbeatTimer) clearInterval(heartbeatTimer);
+    heartbeatTimer = setInterval(function(){
+      api('/api/heartbeat', { method: 'POST', body: { doing: currentDoing } }).then(function(res){
+        setSharingPill(res.body.sharing_on !== false);
+        if (res.body.download_mode && res.body.download_mode !== bootstrap.download_mode){
+          bootstrap.download_mode = res.body.download_mode;
+          applyDownloadMode();
+        }
+        if (res.body.blocked){ showGate('blocked'); return; }
+        if (res.body.session_closed){ showGate('session'); return; }
+        if (res.body.sharing_on === false){ showGate('sharing_off'); return; }
+      }).catch(function(){ /* transient network hiccup — try again next tick */ });
+    }, 4000);
+  }
+
+  /* ---------- boot ---------- */
+  fetch('/api/bootstrap').then(function(r){ return r.json(); }).then(function(b){
+    bootstrap = b || bootstrap;
+    $('headAddr').textContent = bootstrap.address || '';
+    setSharingPill(bootstrap.sharing_on);
+    if (!bootstrap.sharing_on){ showGate('sharing_off'); }
+    // resume an existing session (e.g. after a page refresh)
+    if (sessionToken && bootstrap.sharing_on){
+      api('/api/tree').then(function(res){
+        if (res.status === 200){
+          var savedName = null;
+          try { savedName = sessionStorage.getItem('m1share.name'); } catch (e) {}
+          receiverName = savedName || 'You';
+          $('savedNameText').textContent = receiverName;
+          openFiles(sessionToken);
+        } else {
+          try { sessionStorage.removeItem('m1share.token'); sessionStorage.removeItem('m1share.name'); } catch (e) {}
+          sessionToken = null;
+          if (res.status === 403) showGate(res.body.sharing_on === false ? 'sharing_off' : (res.body.session_closed ? 'session' : 'blocked'));
+        }
+      });
+    }
+  }).catch(function(){
+    $('headAddr').textContent = '';
+    toast('Could not reach the sender — is M1 Share running?');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install build dependencies
+        run: python -m pip install --upgrade pip pyinstaller pillow
+
+      - name: Build M1 Share.exe
+        run: python -m PyInstaller "M1 Share.spec" --noconfirm
+
+      - name: Verify the exe starts
+        shell: pwsh
+        run: |
+          # windowed exe with --serve-only must answer HTTP requests
+          $p = Start-Process -FilePath "dist\M1 Share.exe" -ArgumentList '--serve-only','--port','8380' -PassThru
+          $ok = $false
+          foreach ($i in 1..30) {
+            Start-Sleep -Seconds 1
+            try {
+              $r = Invoke-RestMethod -Uri 'http://127.0.0.1:8380/api/bootstrap' -TimeoutSec 3
+              if ($r.app -eq 'M1 Share') { $ok = $true; break }
+            } catch { }
+          }
+          Stop-Process -Id $p.Id -Force -Confirm:$false -ErrorAction SilentlyContinue
+          if (-not $ok) { Write-Error 'M1 Share.exe did not serve /api/bootstrap'; exit 1 }
+
+      - name: Upload built artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: M1-Share-exe-${{ github.run_number }}
+          path: dist/M1 Share.exe
+          retention-days: 30
+
+  # Submit the artifact to SignPath for signing, once the project is approved.
+  # Required secrets (repo Settings > Secrets and variables > Actions):
+  #   SIGNPATH_API_TOKEN  — SignPath API token for this project
+  #   SIGNPATH_ORG_ID     — your SignPath organization id
+  #   SIGNPATH_PROJECT_ID — your SignPath project slug
+  # Then uncomment the whole job (and keep the tag-only guard).
+  #
+  # sign:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   if: startsWith(github.ref, 'refs/tags/v')
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #   steps:
+  #     - name: Submit to SignPath
+  #       uses: signpath/gh-action-submit-signing-request@v1
+  #       with:
+  #         api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+  #         organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
+  #         project-slug: ${{ secrets.SIGNPATH_PROJECT_ID }}
+  #         signing-policy-slug: release-signing
+  #         github-artifact-name: M1-Share-exe-${{ github.run_number }}
+  #         wait-for-completion: true
+  #     - name: Upload signed artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: M1-Share-signed-${{ github.ref_name }}
+  #         path: signed/*.exe

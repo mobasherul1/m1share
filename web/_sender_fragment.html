@@ -1,0 +1,948 @@
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand"><img class="brand-logo" src="/assets/m1share-logo-horizontal.jpg" alt="M1 Share" /></div>
+    <div class="spacer" aria-hidden="true"></div>
+    <span class="status">Sharing <span class="badge" id="headerSharingBadge">ON</span></span>
+  </header>
+
+  <div class="grid">
+
+  <section class="card hero" aria-labelledby="hero-h">
+    <div class="card-head">
+      <h1 class="card-title" id="hero-h">Your share link</h1>
+    </div>
+    <div class="link-box">
+      <div class="share-link" id="shareLink">http://…</div>
+    </div>
+    <button class="btn btn-primary" id="copyBtn" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span id="copyLabel">Copy link</span>
+    </button>
+    <a class="btn-visit" id="openReceiverBtn" href="/" target="_blank" rel="noopener">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 4h6v6M20 4 11 13M9 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Open the receiver page
+    </a>
+    <p class="send-note">[ send the link to all active users ]</p>
+    <dl class="kv">
+      <div class="kv-row"><dt>Address</dt><dd id="addrVal">…</dd></div>
+      <div class="kv-row"><dt>Port</dt><dd id="portVal">…</dd></div>
+      <div class="kv-row"><dt>Reachable</dt><dd>Wi-Fi and Ethernet</dd></div>
+    </dl>
+
+    <div class="login-area" id="loginCard">
+    <div class="login-top">
+      <span class="login-top-main">
+        <span class="login-top-label">Add login code
+          <span class="login-top-sub" id="loginStateText">Receivers must enter the code to open the share</span>
+        </span>
+      </span>
+      <span class="login-status-row">
+        <span class="badge" id="loginBadge">ON</span>
+        <button class="switch" id="loginToggle" type="button" role="switch" aria-checked="true" aria-label="Turn login code on or off"></button>
+      </span>
+    </div>
+
+    <div class="login-body-wrap"><div class="login-body" id="loginBody">
+      <p class="len-label" id="lenLabel">Choose code length</p>
+      <div class="len-opts" role="radiogroup" aria-labelledby="lenLabel">
+        <button class="len-opt" type="button" role="radio" aria-checked="false" data-len="3">
+          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span><span class="len-opt-title">3 digit</span><span class="len-opt-sub">Fast — but easy to guess</span></span>
+        </button>
+        <button class="len-opt is-active" type="button" role="radio" aria-checked="true" data-len="4">
+          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span><span class="len-opt-title">4 digit</span><span class="len-opt-sub">Most popular</span></span>
+        </button>
+        <button class="len-opt" type="button" role="radio" aria-checked="false" data-len="5">
+          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span><span class="len-opt-title">5 digit</span><span class="len-opt-sub">Extra secure</span></span>
+        </button>
+        <button class="len-opt" type="button" role="radio" aria-checked="false" data-len="custom">
+          <span class="tick" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span><span class="len-opt-title">Custom</span><span class="len-opt-sub">Type your own code</span></span>
+        </button>
+      </div>
+
+      <hr class="dashed-sep" aria-hidden="true" />
+
+      <div class="char-section">
+        <div class="char-opts" role="group" aria-label="Code characters">
+          <label class="char-opt is-on">
+            <input type="checkbox" id="charDigits" checked />
+            <span>Digit</span>
+          </label>
+          <label class="char-opt">
+            <input type="checkbox" id="charLetters" />
+            <span>Alphabet</span>
+          </label>
+          <label class="char-opt">
+            <input type="checkbox" id="charSpecial" />
+            <span>Special Character</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="custom-row" id="customRow" hidden>
+        <label for="customCodeInput" style="position:absolute;left:-9999px">Type your own login code</label>
+        <input class="custom-input" id="customCodeInput" type="text" autocomplete="off" spellcheck="false" maxlength="8" placeholder="Enter code" />
+      </div>
+
+      <button class="btn-generate" id="generateCodeBtn" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Generate new code
+      </button>
+
+      <div class="code-area">
+        <div class="code-box">
+          <p class="code-label">Receiver login code</p>
+          <p class="code-value" id="codeValue" aria-live="polite">––––</p>
+          <p class="code-note" id="codeNote">Receivers enter this code to access &amp; download the files</p>
+        </div>
+        <button class="btn btn-primary btn-copy-code" id="copyCodeBtn" type="button">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span id="copyCodeLabel">Copy code</span>
+        </button>
+      </div>
+    </div></div>
+    </div>
+    <p class="hero-note">Receivers open this link on the same Wi-Fi.</p>
+  </section>
+
+  <section class="card sharing-card" aria-labelledby="sharing-h">
+    <div class="card-head">
+      <h2 class="card-title" id="sharing-h">Sharing</h2>
+    </div>
+
+    <div class="add-row">
+      <input class="add-input" id="addPathInput" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Type or paste a folder path, e.g. C:\Users\E-Learning\Desktop\Files" aria-label="Folder path to share" />
+      <button class="btn-generate" id="addPathBtn" type="button">Add folder</button>
+    </div>
+    <p class="add-hint">Tip: the <strong>M1 Share window</strong> has an <strong>Add folder…</strong> button that opens a normal folder picker.</p>
+    <p class="add-error" id="addRootError" hidden></p>
+    <div class="chip-row" id="mainsBar"></div>
+
+    <div class="browser" id="browser">
+      <div class="b-toolbar">
+        <div class="b-nav">
+          <button class="b-back" type="button" id="backBtn" aria-label="Go to previous folder">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="b-path" id="pathBar" aria-label="Folder path"></div>
+          <label class="b-sort">
+            <span style="position:absolute;left:-9999px">Sort folders and files</span>
+            <select id="sortSelect" aria-label="Sort folders and files">
+              <option value="name-asc" selected>A → Z</option>
+              <option value="name-desc">Z → A</option>
+              <option value="time-asc">Time O → N</option>
+              <option value="time-desc">Time N → O</option>
+              <option value="size-asc">Size S → B</option>
+              <option value="size-desc">Size B → S</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <ul class="b-list" id="bList"></ul>
+      <p class="b-empty" id="bEmpty" hidden>This folder is empty.</p>
+      <div class="b-status" id="bStatus"></div>
+    </div>
+
+    <div class="sel-bar" role="group" aria-label="File selection shortcuts">
+      <button class="sel-btn" type="button" data-select="all">Select all</button>
+      <button class="sel-btn" type="button" data-select="none">Clear selection</button>
+      <button class="sel-btn" type="button" data-select="invert">Invert</button>
+    </div>
+    <div class="big-row">
+      <label class="big-label" for="bigSizeInput">Select files of size</label>
+      <input class="big-input" id="bigSizeInput" type="number" min="0" step="any" inputmode="decimal" value="4" aria-label="Custom size value" />
+      <select class="big-unit" id="bigUnitSelect" aria-label="Size unit">
+        <option value="MB">MB</option>
+        <option value="GB" selected>GB</option>
+      </select>
+      <select class="big-unit" id="bigDirSelect" aria-label="Above or below the size">
+        <option value="above" selected>&amp; above</option>
+        <option value="below">&amp; below</option>
+      </select>
+      <button class="sel-btn big-apply" id="bigApplyBtn" type="button">Apply</button>
+    </div>
+    <p class="sel-summary" id="selSummary" aria-live="polite"></p>
+
+  </section>
+
+  <section class="card keep" aria-labelledby="keep-h">
+    <div class="card-head">
+      <h2 class="card-title" id="keep-h">Sharing on / off</h2>
+    </div>
+    <dl class="kv">
+      <div class="kv-row"><dt>Status</dt><dd><span class="sharing-status-row"><span class="badge" id="sharingBadge">ON</span><button class="switch" id="sharingToggle" type="button" role="switch" aria-checked="true" aria-label="Turn sharing on or off"></button></span></dd></div>
+      <div class="kv-row"><dt>This window</dt><dd>Keep the M1 Share window open while sharing</dd></div>
+      <div class="kv-row"><dt>Sharing ends</dt><dd>The switch above · or close the app</dd></div>
+    </dl>
+    <p class="keep-note" id="sharingNote">Receivers can download until you stop.</p>
+
+    <div class="dl-setting">
+      <p class="dl-label" id="dlLabel">Download — receiver options</p>
+      <div class="dl-opts" role="radiogroup" aria-labelledby="dlLabel">
+        <button class="dl-opt is-active" type="button" role="radio" aria-checked="true" data-dl="single">
+          <span class="radio" aria-hidden="true"></span>
+          <span class="dl-opt-text"><span class="dl-opt-title">Single file</span><span class="dl-opt-sub">The files the receiver ticks download one by one, each as itself</span></span>
+        </button>
+        <button class="dl-opt" type="button" role="radio" aria-checked="false" data-dl="all">
+          <span class="radio" aria-hidden="true"></span>
+          <span class="dl-opt-text"><span class="dl-opt-title">All files</span><span class="dl-opt-sub">Every shared file downloads as separate files — main folder files first, then sub-folder files</span></span>
+        </button>
+      </div>
+      <p class="dl-note" id="dlNote" aria-live="polite">Receivers see only <strong>Download ticked</strong> — the files they tick download one by one, as themselves.</p>
+    </div>
+  </section>
+
+  </div><!-- /.grid -->
+
+  <section class="card live-card">
+    <div class="live-top">
+      <span class="login-top-main">
+        <span class="login-top-label">Live user checker
+          <span class="login-top-sub" id="liveStateText">Names appear here when a receiver saves their name</span>
+        </span>
+      </span>
+      <span class="login-status-row">
+        <span class="badge" id="liveBadge">ON</span>
+        <button class="switch" id="liveToggle" type="button" role="switch" aria-checked="true" aria-label="Turn the live user checker on or off"></button>
+      </span>
+    </div>
+
+    <div id="liveBody">
+      <p class="live-summary" id="liveSummary" aria-live="polite"></p>
+      <ul class="live-list" id="liveList"></ul>
+      <p class="live-empty" id="liveEmpty" hidden>No one is active right now — a receiver appears here as soon as they save their name.</p>
+      <button class="btn-generate live-check" id="liveCheckBtn" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Check now
+      </button>
+    </div>
+  </section>
+
+  <details class="card receiver-card">
+    <summary class="receiver-head">
+      <span class="receiver-head-text">
+        <span class="card-title">How receivers connect</span>
+        <span class="card-sub">Four steps on any phone, tablet or PC on the same Wi-Fi</span>
+      </span>
+      <span class="chev" aria-hidden="true">▾</span>
+    </summary>
+    <div class="more-body" style="padding:2px 18px 18px;color:var(--muted);font-size:14.5px;line-height:1.6">
+      <p><strong>1. Same Wi-Fi.</strong> The receiver joins the same Wi-Fi / router as this PC.</p>
+      <p><strong>2. Open the link.</strong> They open <span id="howLink" class="path-line" style="display:inline-block;margin:4px 0">http://…</span> in any browser — no app to install.</p>
+      <p><strong>3. Save a name.</strong> Their name shows up in the Live user checker above, so you know who is in.</p>
+      <p><strong>4. Code (if set).</strong> They enter the login code above, then tick what they want and download — each file arrives as itself, main-folder files first, then sub-folder files. There is no ZIP.</p>
+      <p style="margin-bottom:0"><a href="/" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700">Open the receiver page</a> to see exactly what they see.</p>
+    </div>
+  </details>
+
+  <details class="more">
+    <summary class="receiver-head" style="display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;min-height:56px">
+      <span class="card-title" style="font-size:16.5px">Recent activity</span>
+      <span class="chev" aria-hidden="true" style="margin-left:auto;color:var(--muted)">▾</span>
+    </summary>
+    <div class="more-body" style="padding:2px 14px 14px">
+      <ul class="activity" id="activityList"></ul>
+    </div>
+  </details>
+
+  <section class="card about" aria-labelledby="about-h">
+    <div class="card-head">
+      <h2 class="card-title" id="about-h">About us</h2>
+    </div>
+    <p style="text-align:center"><strong>M1 Share</strong> — created by <strong><a href="https://bd.linkedin.com/in/mobasherul1" target="_blank" rel="noopener">Md. Mobasherul Hasan</a></strong>.</p>
+    <p style="text-align:center">© 2026 <a href="https://bd.linkedin.com/in/mobasherul1" target="_blank" rel="noopener">Md. Mobasherul Hasan</a>. All rights reserved.</p>
+    <p style="text-align:center">GitHub — <a href="https://github.com/mobasherul1" target="_blank" rel="noopener">github.com/mobasherul1</a></p>
+    <p style="text-align:center">For the latest update, visit the <a href="https://github.com/mobasherul1/m1share" target="_blank" rel="noopener">M1 Share repository</a></p>
+    <p style="text-align:center;color:var(--faint);font-size:12.5px;margin-top:10px">Release v1.0.0</p>
+  </section>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  var CHECK_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var FOLDER_SVG = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4l2 2.5h9A1.5 1.5 0 0 1 21 9v8.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Z" fill="#57a639" opacity=".9"/></svg>';
+  var FILE_SVG = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2.5h8L19 7.5v14H6v-19Z" stroke="#9a9a96" stroke-width="1.6" stroke-linejoin="round"/><path d="M13.5 2.5v5.5H19" stroke="#9a9a96" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2400);
+  }
+
+  function fmtSize(bytes){
+    if (bytes >= 1024*1024*1024){
+      var v = Math.round(bytes / (1024*1024*1024) * 10) / 10;
+      return (v % 1 === 0 ? v.toFixed(0) : v.toFixed(1)) + ' GB';
+    }
+    if (bytes >= 1024*1024) return Math.round(bytes / (1024*1024)) + ' MB';
+    if (bytes >= 1024) return Math.round(bytes / 1024) + ' KB';
+    return (bytes || 0) + ' B';
+  }
+  function descFiles(node, out){
+    out = out || [];
+    if (node.type === 'file'){ out.push(node); return out; }
+    (node.children || []).forEach(function(c){ descFiles(c, out); });
+    return out;
+  }
+  function nodeSelState(node){
+    var files = descFiles(node);
+    if (!files.length) return 'none';
+    var on = files.filter(function(f){ return f.selected; }).length;
+    if (on === 0) return 'none';
+    if (on === files.length) return 'all';
+    return 'some';
+  }
+  function countItems(node){
+    var total = 0;
+    (function walk(n){
+      (n.children || []).forEach(function(c){ total++; if (c.type === 'folder') walk(c); });
+    })(node);
+    return total;
+  }
+
+  function api(path, body){
+    return fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body || {})
+    }).then(function(r){ return r.json().catch(function(){ return {}; }); });
+  }
+  function getState(){
+    return fetch('/api/sender/state').then(function(r){ return r.json(); });
+  }
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* robust copy — same approach as the design pages */
+  function copyText(text, done, fail){
+    var finished = false;
+    function succeed(){ if (!finished){ finished = true; done(); } }
+    function fallbackCopy(){
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0.01;width:2em;height:2em';
+        document.body.appendChild(ta);
+        ta.focus(); ta.select();
+        try { ta.setSelectionRange(0, text.length); } catch (e) {}
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        return ok;
+      } catch (e) { return false; }
+    }
+    if (fallbackCopy()){ succeed(); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(succeed, function(){ if (fail) fail(); });
+    } else if (fail) { fail(); }
+  }
+
+  /* ================= state & rendering ================= */
+  var S = { state: null, stack: [], sortMode: 'name-asc' };
+  var liveOn = true;   // cosmetic toggle for the checker panel
+
+  /* skip DOM rebuilds when the polled data hasn't changed — rebuilding every
+     2.5s was stealing focus from ticks, checkboxes and path buttons */
+  var renderedHashes = { roots: '', path: '', list: '', live: '', activity: '' };
+  function hashOf(x){
+    var s = JSON.stringify(x);
+    var h = 0;
+    for (var i = 0; i < s.length; i++){ h = ((h << 5) - h + s.charCodeAt(i)) | 0; }
+    return String(h) + ':' + s.length;
+  }
+
+  var TREE_CACHE = [];
+
+  function findNodeById(id, nodes){
+    nodes = nodes || TREE_CACHE;
+    for (var i = 0; i < nodes.length; i++){
+      if (nodes[i].id === id) return nodes[i];
+      var found = findNodeById(id, nodes[i].children || []);
+      if (found) return found;
+    }
+    return null;
+  }
+  /* resolve the id stack against the freshest tree — object identities change on every poll */
+  function resolveStack(){
+    var node = null, out = [];
+    for (var i = 0; i < S.stack.length; i++){
+      var pool = node ? (node.children || []) : TREE_CACHE;
+      var next = null;
+      for (var j = 0; j < pool.length; j++){
+        if (pool[j].id === S.stack[i]){ next = pool[j]; break; }
+      }
+      if (!next) break;
+      out.push(next);
+      node = next;
+    }
+    S.stack = out.map(function(n){ return n.id; });
+    return out;
+  }
+  function currentFolder(){
+    var stack = resolveStack();
+    return stack[stack.length - 1] || null;
+  }
+
+  function sortedItems(items){
+    var arr = items.slice();
+    var mode = S.sortMode;
+    arr.sort(function(a, b){
+      if (mode === 'name-asc') return a.name.localeCompare(b.name);
+      if (mode === 'name-desc') return b.name.localeCompare(a.name);
+      if (mode === 'time-asc') return (a.modKey||0) - (b.modKey||0);
+      if (mode === 'time-desc') return (b.modKey||0) - (a.modKey||0);
+      if (mode === 'size-asc') return (a.size||0) - (b.size||0);
+      if (mode === 'size-desc') return (b.size||0) - (a.size||0);
+      return 0;
+    });
+    return arr;
+  }
+
+  function renderLink(){
+    var st = S.state;
+    $('shareLink').innerHTML = '<span class="part plain">' + escapeHtml(st.share_url) + '</span>';
+    $('addrVal').textContent = st.ip;
+    $('portVal').textContent = String(st.port);
+    $('howLink').textContent = st.share_url;
+  }
+
+  function renderSharingToggle(){
+    var on = S.state.sharing_on;
+    $('sharingToggle').setAttribute('aria-checked', on ? 'true' : 'false');
+    $('sharingBadge').textContent = on ? 'ON' : 'OFF';
+    $('sharingBadge').classList.toggle('badge-off-red', !on);
+    $('headerSharingBadge').textContent = on ? 'ON' : 'OFF';
+    $('headerSharingBadge').classList.toggle('badge-off-red', !on);
+    $('sharingNote').textContent = on
+      ? 'Receivers can download until you stop.'
+      : 'Sharing is off — receivers can’t download right now.';
+  }
+
+  function renderDownloadMode(){
+    var mode = S.state.download_mode || 'single';
+    document.querySelectorAll('[data-dl]').forEach(function(btn){
+      var on = btn.getAttribute('data-dl') === mode;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+    $('dlNote').innerHTML = mode === 'all'
+      ? 'Receivers see only <strong>Download all files</strong> — every shared file downloads, main folder files first, then sub-folder files.'
+      : 'Receivers see only <strong>Download ticked</strong> — the files they tick download one by one, as themselves.';
+  }
+
+  function renderCode(){
+    var st = S.state;
+    var on = !!st.code_on;
+    $('loginToggle').setAttribute('aria-checked', on ? 'true' : 'false');
+    $('loginBadge').textContent = on ? 'ON' : 'OFF';
+    $('loginBadge').classList.toggle('badge-off-amber', !on);
+    $('loginCard').classList.toggle('is-off', !on);
+    $('loginStateText').textContent = on
+      ? 'Receivers must enter the code to open the share'
+      : 'Off — anyone with the link can open the share';
+    $('codeValue').textContent = on ? (st.code || '––––') : '––––';
+    $('codeNote').textContent = on
+      ? (st.code ? 'Receivers enter this code to access & download the files'
+                 : 'No code yet — type your own below, or tap Generate new code')
+      : 'Login code is off — anyone with the link can open the share';
+    document.querySelectorAll('[data-len]').forEach(function(btn){
+      var active = btn.getAttribute('data-len') === String(st.code_length);
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+    $('customRow').hidden = st.code_length !== 'custom';
+    if (document.activeElement !== $('customCodeInput')) $('customCodeInput').value = st.code_length === 'custom' ? (st.code || '') : '';
+    var cs = st.charsets || { digits: true };
+    $('charDigits').checked = !!cs.digits;
+    $('charLetters').checked = !!cs.letters;
+    $('charSpecial').checked = !!cs.special;
+    $('charDigits').closest('.char-opt').classList.toggle('is-on', !!cs.digits);
+    $('charLetters').closest('.char-opt').classList.toggle('is-on', !!cs.letters);
+    $('charSpecial').closest('.char-opt').classList.toggle('is-on', !!cs.special);
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function renderRoots(){
+    var bar = $('mainsBar');
+    var h = hashOf(TREE_CACHE.map(function(r){ return [r.id, r.name, r.path]; }));
+    if (h === renderedHashes.roots) return;
+    renderedHashes.roots = h;
+    bar.innerHTML = '';
+    TREE_CACHE.forEach(function(root){
+      var chip = document.createElement('span');
+      chip.className = 'root-chip';
+      chip.title = (root.path || '');
+      chip.innerHTML = '<span class="name"></span><button class="rm" type="button" aria-label="Remove folder">×</button>';
+      chip.querySelector('.name').textContent = root.name;
+      chip.querySelector('.rm').addEventListener('click', function(){
+        api('/api/sender/remove_root', { id: root.id }).then(function(){
+          S.stack = [];
+          pollNow();
+          showToast('“' + root.name + '” removed — files are no longer shared');
+        });
+      });
+      bar.appendChild(chip);
+    });
+    bar.style.display = TREE_CACHE.length ? 'flex' : 'none';
+  }
+
+  function renderList(){
+    var folder = currentFolder();
+    var h = folder
+      ? hashOf([(S.state && S.state.sel_version) || 0, folder.id, S.sortMode,
+                 (folder.children || []).map(function(n){
+                   return [n.id, n.type, n.selected === undefined ? null : n.selected, n.size || 0];
+                 })])
+      : 'empty';
+    if (h === renderedHashes.list) return;
+    renderedHashes.list = h;
+    var bList = $('bList');
+    bList.innerHTML = '';
+    if (!folder){
+      $('bEmpty').hidden = false;
+      $('bEmpty').textContent = 'No folders added yet — add one above to choose files to share.';
+      $('bStatus').textContent = '';
+      return;
+    }
+    var folders = [], files = [];
+    (folder.children || []).forEach(function(c){ (c.type === 'folder' ? folders : files).push(c); });
+    var items = sortedItems(folders).concat(sortedItems(files));
+    $('bEmpty').hidden = items.length !== 0;
+    $('bEmpty').textContent = 'This folder is empty.';
+
+    items.forEach(function(node){
+      var isFolder = node.type === 'folder';
+      var state = isFolder ? nodeSelState(node) : (node.selected ? 'all' : 'none');
+      var li = document.createElement('li');
+      li.className = 'b-row' + (state === 'all' ? ' is-selected' : (state === 'some' ? ' is-partial' : ''));
+
+      var check = document.createElement('button');
+      check.type = 'button';
+      check.className = 'b-check' + (state === 'some' ? ' is-partial' : '');
+      check.setAttribute('aria-pressed', state === 'all' ? 'true' : (state === 'some' ? 'mixed' : 'false'));
+      check.setAttribute('aria-label', (state === 'all' ? 'Untick ' : 'Tick ') + node.name + (isFolder ? ' and everything inside it' : ''));
+      check.innerHTML = '<span class="check" aria-hidden="true">' + CHECK_SVG + '</span>';
+      check.addEventListener('click', function(){
+        api('/api/sender/toggle', { node: node.id, on: state !== 'all' }).then(pollNow);
+      });
+      li.appendChild(check);
+
+      var mainBtn = document.createElement('button');
+      mainBtn.type = 'button';
+      mainBtn.className = 'b-main';
+      mainBtn.setAttribute('aria-label', isFolder ? 'Open folder ' + node.name : 'Tick or untick ' + node.name);
+      var meta;
+      if (isFolder){
+        var kids = countItems(node);
+        meta = '<strong>' + fmtSize(node.size || 0) + '</strong>' + kids + (kids === 1 ? ' item' : ' items') + (node.mod ? '<br>' + escapeHtml(node.mod) : '');
+      } else {
+        meta = '<strong>' + fmtSize(node.size || 0) + '</strong>' + escapeHtml(node.mod || '');
+      }
+      mainBtn.innerHTML =
+        '<span class="b-ic" aria-hidden="true">' + (isFolder ? FOLDER_SVG : FILE_SVG) + '</span>' +
+        '<span class="b-name"></span>' +
+        '<span class="b-meta">' + meta + '</span>' +
+        (isFolder ? '<span class="b-enter" aria-hidden="true">›</span>' : '');
+      mainBtn.querySelector('.b-name').textContent = node.name;
+      mainBtn.addEventListener('click', function(){
+        if (isFolder){
+          S.stack.push(node.id);
+          renderBrowser();
+        } else {
+          api('/api/sender/toggle', { node: node.id, on: !node.selected }).then(pollNow);
+        }
+      });
+      li.appendChild(mainBtn);
+      bList.appendChild(li);
+    });
+
+    var selHere = items.filter(function(n){
+      return n.type === 'file' ? n.selected : nodeSelState(n) === 'all';
+    }).length;
+    $('bStatus').textContent = folders.length + (folders.length === 1 ? ' folder' : ' folders') + ' · ' +
+      files.length + (files.length === 1 ? ' file' : ' files') +
+      (items.length ? ' · ' + selHere + ' of ' + items.length + ' ticked here' : '');
+  }
+
+  function renderSummary(){
+    var s = (S.state && S.state.summary) || { total_files: 0, selected_files: 0, selected_bytes: 0, full_folders: 0 };
+    var el = $('selSummary');
+    if (!s.total_files){ el.innerHTML = 'Nothing to share yet.'; return; }
+    if (!s.selected_files){
+      el.innerHTML = '<strong>0 of ' + s.total_files + ' files</strong> selected — tick a file or folder to share it.';
+      return;
+    }
+    el.innerHTML = '<strong>' + s.selected_files + ' of ' + s.total_files + ' files</strong> selected · ' +
+      fmtSize(s.selected_bytes) + ' will be shared' +
+      (s.full_folders ? ' · <strong>' + s.full_folders + (s.full_folders === 1 ? ' folder' : ' folders') + '</strong> included whole' : '');
+  }
+
+  function renderPathStack(stackNodes){
+    var h = hashOf(stackNodes.map(function(n){ return [n.id, n.name]; }));
+    if (h === renderedHashes.path) return;
+    renderedHashes.path = h;
+    var pathBar = $('pathBar');
+    pathBar.innerHTML = '';
+    if (!stackNodes.length){
+      pathBar.innerHTML = '<div class="path-text">/</div>';
+      return;
+    }
+    var boxes = document.createElement('div');
+    boxes.className = 'path-boxes';
+    stackNodes.forEach(function(node, idx){
+      if (idx > 0){
+        var sep = document.createElement('span');
+        sep.className = 'path-sep';
+        sep.setAttribute('aria-hidden', 'true');
+        sep.textContent = '›';
+        boxes.appendChild(sep);
+      }
+      var seg = document.createElement('button');
+      seg.type = 'button';
+      seg.className = 'path-seg' + (idx === stackNodes.length - 1 ? ' is-current' : '');
+      seg.textContent = node.name;
+      seg.setAttribute('aria-label', 'Go to ' + node.name);
+      (function(targetIdx){
+        seg.addEventListener('click', function(){
+          S.stack = S.stack.slice(0, targetIdx + 1);
+          renderBrowser();
+        });
+      })(idx);
+      boxes.appendChild(seg);
+    });
+    pathBar.appendChild(boxes);
+  }
+
+  function renderBrowser(){
+    var stackNodes = resolveStack();   // also prunes ids of folders that disappeared
+    renderRoots();
+    renderPathStack(stackNodes);
+    $('backBtn').disabled = S.stack.length < 2;
+    renderList();
+    renderSummary();
+  }
+
+  $('backBtn').addEventListener('click', function(){
+    if (S.stack.length < 2) return;
+    S.stack.pop();
+    renderBrowser();
+  });
+  $('sortSelect').addEventListener('change', function(){ S.sortMode = this.value; renderList(); });
+
+  /* selection shortcuts act on the folder being viewed (or everything at the top) */
+  document.querySelectorAll('[data-select]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var op = this.getAttribute('data-select');
+      var folder = currentFolder();
+      api('/api/sender/bulk', { op: op, folder: folder ? folder.id : null }).then(function(){
+        pollNow();
+        showToast(op === 'all' ? 'Everything ticked' : op === 'none' ? 'Selection cleared' : 'Selection inverted');
+      });
+    });
+  });
+  $('bigApplyBtn').addEventListener('click', function(){
+    var raw = parseFloat($('bigSizeInput').value);
+    if (isNaN(raw) || raw < 0){ showToast('Type a size first — e.g. 500 MB or 4 GB'); $('bigSizeInput').focus(); return; }
+    var folder = currentFolder();
+    api('/api/sender/bulk', {
+      op: 'size',
+      folder: folder ? folder.id : null,
+      value: raw,
+      unit: $('bigUnitSelect').value,
+      dir: $('bigDirSelect').value
+    }).then(function(){
+      pollNow();
+      showToast('Size filter applied');
+    });
+  });
+  $('bigSizeInput').addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){ e.preventDefault(); $('bigApplyBtn').click(); }
+  });
+
+  /* ================= adds / removes ================= */
+  $('addPathBtn').addEventListener('click', function(){
+    var input = $('addPathInput');
+    var path = (input.value || '').trim();
+    $('addRootError').hidden = true;
+    if (!path){ $('addRootError').textContent = 'Type a folder path first.'; $('addRootError').hidden = false; input.focus(); return; }
+    api('/api/sender/root', { path: path }).then(function(res){
+      if (res.error){ $('addRootError').textContent = res.error; $('addRootError').hidden = false; return; }
+      input.value = '';
+      S.stack = [];
+      pollNow();
+      showToast('“' + res.root.name + '” added — its files are selected');
+    }).catch(function(){ $('addRootError').textContent = 'Could not add that folder.'; $('addRootError').hidden = false; });
+  });
+  $('addPathInput').addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){ e.preventDefault(); $('addPathBtn').click(); }
+  });
+
+  /* ================= copy link / open receiver ================= */
+  var copyBtnTimer = null;
+  $('copyBtn').addEventListener('click', function(){
+    var url = S.state ? S.state.share_url : '';
+    copyText(url, function(){
+      $('copyLabel').textContent = 'Copied ✓';
+      showToast('Link copied — send it to the receiver');
+      clearTimeout(copyBtnTimer);
+      copyBtnTimer = setTimeout(function(){ $('copyLabel').textContent = 'Copy link'; }, 2200);
+    }, function(){
+      showToast('Auto-copy blocked — the link is selected, press Ctrl+C');
+    });
+  });
+
+  /* ================= sharing on / off ================= */
+  $('sharingToggle').addEventListener('click', function(){
+    var on = !(S.state && S.state.sharing_on);
+    api('/api/sender/sharing', { on: on }).then(function(){
+      pollNow();
+      showToast(on ? 'Sharing ON — receivers can download' : 'Sharing OFF — receivers can’t download');
+    });
+  });
+
+  document.querySelectorAll('[data-dl]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var mode = this.getAttribute('data-dl');
+      api('/api/sender/download_mode', { mode: mode }).then(function(){
+        pollNow();
+        showToast(mode === 'all' ? 'Downloads set to all files' : 'Downloads set to single file');
+      });
+    });
+  });
+
+  /* ================= login code card ================= */
+  $('loginToggle').addEventListener('click', function(){
+    var on = !(S.state && S.state.code_on);
+    api('/api/sender/code_on', { on: on }).then(function(){
+      pollNow();
+      showToast(on ? 'Login code ON — receivers must enter the code' : 'Login code OFF — share is open to anyone with the link');
+    });
+  });
+  document.querySelectorAll('[data-len]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var mode = this.getAttribute('data-len');
+      api('/api/sender/code_length', { length: mode }).then(function(){
+        pollNow();
+        showToast(mode === 'custom' ? 'Custom code — type your own' : 'New ' + mode + '-character code generated');
+      });
+    });
+  });
+  ['charDigits', 'charLetters', 'charSpecial'].forEach(function(id){
+    var key = { charDigits: 'digits', charLetters: 'letters', charSpecial: 'special' }[id];
+    $(id).addEventListener('change', function(){
+      var box = this;
+      api('/api/sender/code_charset', { key: key, on: box.checked }).then(function(res){
+        if (!box.checked && res.charsets && !res.charsets.digits && !res.charsets.letters && !res.charsets.special){
+          box.checked = true;
+          showToast('Keep at least one character type ticked');
+          return;
+        }
+        pollNow();
+      });
+    });
+  });
+  var customTimer = null;
+  /* the filter must honour the ticked character types — the server strips
+     anything else silently, so typing letters with only Digit ticked would
+     otherwise "work" in the box but vanish from the actual code */
+  function codeCharsetRegex(){
+    var cs = (S.state && S.state.charsets) || { digits: true };
+    var cls = '';
+    if (cs.digits) cls += '0-9';
+    if (cs.letters) cls += 'A-Z';
+    if (cs.special) cls += '!@#$%&*?';
+    return cls ? new RegExp('[^' + cls + ']', 'g') : null;
+  }
+  $('customCodeInput').addEventListener('input', function(){
+    var re = codeCharsetRegex();
+    var v = this.value.toUpperCase();
+    if (re) v = v.replace(re, '');
+    v = v.slice(0, 8);
+    if (v !== this.value) this.value = v;
+    clearTimeout(customTimer);
+    customTimer = setTimeout(function(){
+      api('/api/sender/custom_code', { value: v }).then(pollNow);
+    }, 250);
+  });
+  $('generateCodeBtn').addEventListener('click', function(){
+    api('/api/sender/generate_code', {}).then(function(){
+      pollNow();
+      showToast('New login code generated — share it with your receivers');
+    });
+  });
+  var copyCodeTimer = null;
+  $('copyCodeBtn').addEventListener('click', function(){
+    if (!S.state || !S.state.code_on){ showToast('Turn the login code on first'); return; }
+    if (!S.state.code){ showToast('Type or generate a code first'); return; }
+    copyText(S.state.code, function(){
+      $('copyCodeLabel').textContent = 'Copied ✓';
+      showToast('Login code copied — send it to your receivers');
+      clearTimeout(copyCodeTimer);
+      copyCodeTimer = setTimeout(function(){ $('copyCodeLabel').textContent = 'Copy code'; }, 2200);
+    }, function(){ showToast('Auto-copy blocked — code is ' + S.state.code); });
+  });
+
+  /* ================= live users ================= */
+  $('liveToggle').addEventListener('click', function(){
+    liveOn = !liveOn;
+    this.setAttribute('aria-checked', liveOn ? 'true' : 'false');
+    $('liveBadge').textContent = liveOn ? 'ON' : 'OFF';
+    $('liveBadge').classList.toggle('badge-off', !liveOn);
+    $('liveBody').hidden = !liveOn;
+    $('liveStateText').textContent = liveOn
+      ? 'Names appear here when a receiver saves their name'
+      : 'Off — you can’t see who is active right now';
+  });
+
+  function initials(name){
+    var parts = String(name || '').trim().split(/\s+/), out = '';
+    for (var i = 0; i < parts.length && out.length < 2; i++){
+      if (parts[i]) out += parts[i].charAt(0).toUpperCase();
+    }
+    return out || '?';
+  }
+  function renderLiveUsers(){
+    var users = (S.state && S.state.live_users) || [];
+    var h = hashOf(users.map(function(u){ return [u.name, u.access, u.stale, u.doing, u.ip]; }));
+    if (h === renderedHashes.live) return;
+    renderedHashes.live = h;
+    var list = $('liveList');
+    list.innerHTML = '';
+    users.forEach(function(u){
+      var li = document.createElement('li');
+      li.className = 'live-row' + (u.access ? '' : ' is-blocked') + (u.stale ? ' is-stale' : '');
+
+      var avatar = document.createElement('span');
+      avatar.className = 'live-avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = initials(u.name);
+      li.appendChild(avatar);
+
+      var main = document.createElement('span');
+      main.className = 'live-main';
+      var nameEl = document.createElement('span');
+      nameEl.className = 'live-name';
+      nameEl.textContent = u.name;
+      var subEl = document.createElement('span');
+      subEl.className = 'live-sub';
+      subEl.style.display = 'block';
+      subEl.textContent = u.ip + ' · ' + (u.doing || 'Viewing files');
+      main.appendChild(nameEl);
+      main.appendChild(subEl);
+      li.appendChild(main);
+
+      var accessBtn = document.createElement('button');
+      accessBtn.type = 'button';
+      accessBtn.className = 'live-access-btn' + (u.access ? '' : ' is-off');
+      accessBtn.setAttribute('aria-pressed', u.access ? 'true' : 'false');
+      accessBtn.setAttribute('aria-label', (u.access ? 'Remove access for ' : 'Give access to ') + u.name);
+      accessBtn.innerHTML = u.access
+        ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 7.5-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Access on'
+        : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2"/></svg>Access off';
+      accessBtn.addEventListener('click', function(){
+        api('/api/sender/block', { name: u.name, block: u.access }).then(function(){
+          pollNow();
+          showToast(u.access ? '“' + u.name + '” blocked' : '“' + u.name + '” unblocked');
+        });
+      });
+      li.appendChild(accessBtn);
+
+      var status = document.createElement('span');
+      status.className = 'live-status';
+      var active = document.createElement('span');
+      if (u.access){
+        active.className = 'live-active';
+        active.innerHTML = '<span class="dot" aria-hidden="true"></span>' + (u.stale ? 'Idle' : 'Active now');
+      } else {
+        active.className = 'live-blocked';
+        active.innerHTML = '<span class="dot dot-off" aria-hidden="true"></span>Access blocked';
+      }
+      status.appendChild(active);
+      li.appendChild(status);
+      list.appendChild(li);
+    });
+    $('liveEmpty').hidden = users.length !== 0;
+    $('liveSummary').innerHTML = users.length
+      ? '<strong>' + users.length + (users.length === 1 ? ' user' : ' users') + ' active now</strong> · updated just now'
+      : '<strong>No one active</strong> · updated just now';
+  }
+  $('liveCheckBtn').addEventListener('click', function(){
+    pollNow().then(function(){
+      var n = (S.state && S.state.live_users || []).length;
+      showToast(n ? 'Checked — ' + n + (n === 1 ? ' user is' : ' users are') + ' active now' : 'Checked — no one is active right now');
+    });
+  });
+
+  /* ================= activity ================= */
+  function renderActivity(){
+    var events = (S.state && S.state.events) || [];
+    var h = hashOf(events.slice(-14));
+    if (h === renderedHashes.activity) return;
+    renderedHashes.activity = h;
+    var ul = $('activityList');
+    ul.innerHTML = '';
+    if (!events.length){
+      var li = document.createElement('li');
+      li.textContent = 'No activity yet — waiting for receivers…';
+      ul.appendChild(li);
+      return;
+    }
+    events.slice(-14).forEach(function(line){
+      var li = document.createElement('li');
+      li.textContent = line;
+      ul.appendChild(li);
+    });
+  }
+
+  /* ================= polling ================= */
+  var pollTimer = null;
+  function pollNow(){
+    return getState().then(function(state){
+      S.state = state;
+      TREE_CACHE = state.tree || [];
+      // roots chips need plain root paths too — attach them
+      var plain = {};
+      (state.roots || []).forEach(function(r){ plain[r.id] = r.path; });
+      TREE_CACHE.forEach(function(t){ t.path = plain[t.id] || ''; });
+      // with no folder open, land on the first shared root
+      if (!S.stack.length && TREE_CACHE.length) S.stack = [TREE_CACHE[0].id];
+      renderLink();
+      renderSharingToggle();
+      renderDownloadMode();
+      renderCode();
+      renderBrowser();
+      renderLiveUsers();
+      renderActivity();
+    }).catch(function(){ /* server restarting — keep last state */ });
+  }
+  function startPolling(){
+    pollNow().then(function(){
+      if (pollTimer) clearInterval(pollTimer);
+      pollTimer = setInterval(pollNow, 2500);
+    });
+  }
+  startPolling();
+})();
+</script>
+</body>
+</html>
