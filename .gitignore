@@ -1,0 +1,8 @@
+# M1share
+# Ignore local build output and OS files — source only in the repo.
+*.exe
+*.msi
+dist/
+build/
+.DS_Store
+Thumbs.db
