@@ -1,0 +1,666 @@
+M1SHARE - DESIGN NOTES AND HOW ALL FUNCTIONS WORK
+========================================================================
+
+One file, everything in it. This is the complete design-notes and function
+guide for the M1Share file-share pages (sender / Companion and receiver),
+taken from the STABLE designs Md. approved on 11 November 2026: sender v48
+and receiver v14.
+
+Date of this file: 15 November 2026. Source files: m1share-sender-v48.html
+and m1share-receiver-v14.html from the "m1share ui design" pack (Drive
+folder "m1share ui design", m1share-ui-design-stable-2026-11-11.zip).
+
+What happened to the notes: the "Design preview" banner at the top of the
+sender page and the "Design notes - for your approval" section at the bottom
+of the sender page were removed from the HTML on 15 November 2026 at Md.'s
+request, and moved here, so the pages show only the real page itself. The
+receiver page had no design-notes section left - it was already removed on
+11 November 2026. Nothing else was changed in either page.
+
+IMPORTANT - WHAT THESE PAGES ARE: both pages are design previews only, not
+the working Companion. Downloads in them are simulated and nothing is really
+downloaded or saved. The real downloading, the real login-code check and the
+real sending of a receiver name to the sender happen in the Companion server
+once it serves these pages. The sample data in the previews (the "Adobe
+files" folder, file names and sizes) is demo data only.
+
+
+========================================================================
+A. SENDER PAGE - DESIGN NOTES (AS WRITTEN, ALL 19 ITEMS)
+========================================================================
+
+These are the design notes that were at the bottom of the sender (Companion)
+page, word for word. They explain the choices in the design above them.
+
+1. Router-dashboard styling: the cards now follow the router status page you
+   sent — flat light-grey rounded cards on a white page, a small line icon
+   centred at the top of each card with its title centred underneath, small
+   label / value rows with thin dividers inside, and small green ON badges
+   for status, like the YES badges on that screen.
+
+2. Share link and login code in one card: the top row pairs the merged card on
+   the left — your share link on top, the login code area at the bottom of
+   the same card — with the sharing on / off card on the right. Under them,
+   the Sharing folder browser runs the full width of the page, and the
+   Details dropdown closes the page full-width, just above About us.
+
+3. The link stays the hero: biggest text on the page, one big green Copy
+   button, readable from across a room.
+
+4. Your logo leads the page: the horizontal M1Share logo — dark navy M, bright
+   blue 1, blue swoosh ring, with “Share” in dark navy beside the mark on
+   the same line — sits in the header, about the same height as the square
+   logo it replaced, so the Companion carries the real M1Share brand — green
+   stays for the actions below it.
+
+5. About at the bottom: a full-width “About the creation / About us” card
+   closes the page, naming Md. Mobasherul Hasan, the creator of M1 Share.
+
+6. Pick exactly what gets shared: every file row is a tick box — tap a file to
+   include or leave it out. Select all, Clear selection and Invert handle
+   the whole list in one tap — Invert flips every file one by one, even
+   inside folders, so a part-ticked folder swaps exactly which of its files
+   are shared. The old fixed “Big files · 4 GB +” button is now custom: type
+   any size, pick MB or GB, pick “& above” or “& below”, and press Apply —
+   every file on that side of the size gets selected (files on the other
+   side are unticked), in the folder you are viewing, sub-folders included.
+   The line above the files always shows how many files and how many GB will
+   be shared.
+
+7. More than one folder: “Add another folder” adds a second (or third) main
+   folder to the share and opens it in the browser; every folder you add
+   counts toward the shared total shown under the list. Once more than one
+   folder is shared, a tab for each folder appears at the top of the browser
+   — tap a tab to jump back to that folder and change its ticks (before, the
+   first folder became unreachable once a second was added).
+
+8. Sharing on / off switch: the Status row in the Sharing on / off card now
+   carries the same badge + switch as the login code area — flip it and
+   sharing turns OFF (the card badge and the header badge both switch to a
+   red OFF, the switch itself turns red too, and the note under the rows
+   says receivers can’t download), flip it back and sharing is ON again.
+
+9. Downloads — single file or all files, no ZIP: the ZIP option was removed —
+   packing files into a ZIP put extra load on the sender's PC. There are
+   just two download options now, picked by the sender in the Sharing on /
+   off card: Single file (the files the receiver ticks download one by one,
+   each as itself) or All files (every shared file as a separate file, main
+   folder files first, then sub-folder files). The preview under the options
+   shows exactly which button the receiver will see, and it updates as you
+   tap — and the buttons in the “What the receiver sees” panel follow the
+   same choice: the one the sender did not allow is disabled there.
+
+10. Receiver view — every file as itself: the full-width “What the receiver
+   sees” card under the grid is a dropdown panel — collapsed by default, tap
+   its header to open it — and shows the share exactly as the receiver gets
+   it: the main folder opens, sub-folders open inside it, and every file and
+   folder carries a tick box with the same green / yellow-red states.
+   Pressing “Download ticked” lists what will actually arrive, following the
+   backend rule: every ticked file downloads as itself — files ticked in the
+   main folder and files ticked inside sub-folders alike, each listed with
+   its folder path; nothing is ever zipped. “Download all files” lists every
+   shared file the same way — across every main folder the sender added —
+   each as its own separate download, in download order: the main folder's
+   own files first, grouped at the top, then the sub-folder files below
+   them. And if any tick changes after a “You will download” list has been
+   shown, the list clears itself instead of promising files that are no
+   longer coming. This is the rule the Companion backend must follow when it
+   builds a receiver's download. The preview is fed by the sender's own
+   folder tree, not a copy of it: untick a file in the Sharing section and
+   it vanishes from the receiver preview immediately, re-tick it and it
+   comes back — the receiver's own ticks in the preview are separate and
+   never change what the sender shares.
+
+11. Visit M1share, plus a send reminder: under Copy link sits a “Visit M1share”
+   button that opens https://m1share.netlify.app/ in a new tab — the public
+   M1share site, not this share link. Copy link copies the share link above
+   it (http://192.168.0.134:8000/) to the clipboard, with a fallback that
+   selects the link for manual copying if the browser blocks auto-copy.
+   Beneath it, the bracketed note “[ send the link to all active users ]” is
+   set in a warm amber-red — noticeable like a reminder, but softer than
+   pure red.
+
+12. Login code locks the share: inside the share-link card, the “Add login code”
+   area at the bottom is the security gate for the shared files — when it is
+   ON, anyone opening the link must enter the code before they can see or
+   download anything — the short line under the code in the dark panel says
+   exactly that. The area works as a dropdown tied to its switch: switch ON
+   and the settings open below it; switch OFF and the settings hide
+   completely. Its OFF colour is a warm amber-red (yellow-red) — the badge
+   and the switch both turn that colour — deliberately different from the
+   sharing switch's pure red OFF, so the two OFF states never get mixed up.
+   The sender ticks 3, 4 or 5 digit (or Custom to type their own code), taps
+   “Generate new code” for a fresh one, and the code shows big and bold in
+   JetBrains Mono — the popular monospace face used for codes — inside a
+   dark code panel, with its own Copy code button.
+
+13. Pick what the code is made of: under the code-length options, three small
+   tick boxes sit side by side, names only — Digit (ticked by default),
+   Alphabet, and Special Character — with no extra explanation text. A
+   dashed line separates them from the length options above, and the whole
+   character area is tinted blue (the length options stay green) so the two
+   groups never look the same. Tick or untick any of them and, while a 3 / 4
+   / 5 length is selected, a fresh code is generated from the new mix
+   straight away, always containing at least one character from each ticked
+   type; at least one box must stay ticked. Letters are uppercase only:
+   generated codes never use lowercase, and in Custom mode a lowercase
+   letter typed is turned uppercase automatically.
+
+14. Folder browser, Linux Mint style: the Sharing card is now a file manager
+   like the Mint (Nemo) screens you sent. There is no separate folder-
+   showing strip: the main folder is the first box in the path, and you move
+   between folders from the path itself — main to sub, sub back to main, and
+   down the trail again. A previous (back) button, the path, and a sort
+   dropdown run left to right — sort by name (A → Z / Z → A), modified time
+   (O → N / N → O) or size (S → B / B → S), labels kept short on purpose.
+   The path is the “Path” control: it shows Linux-style folder boxes by
+   default — [Main folder] [sub folder] — and clicking the path area itself
+   replaces the boxes with the text path as it is typed in CMD or PowerShell
+   — Main folder/sub folder/ — clicking again brings the folder boxes back;
+   tapping a single box still jumps straight to that folder. Inside a main
+   folder you can open sub-folders — even folders inside folders — and share
+   them whole, just like files. The list always shows folders first, then
+   files, with a Mint-style status line at the bottom counting what's in the
+   folder you're looking at.
+
+15. Every item has a tick box: files and folders alike carry a checkbox on the
+   left. Ticking a folder auto-selects every file inside it, however deep.
+   If only some files inside a folder are ticked, that folder's checkbox
+   turns yellow-red (partial); when all its files are ticked, the checkbox
+   is green — and the same colours roll up to the folders above it.
+
+16. Big touch targets, responsive: main buttons are at least 48px tall and
+   smaller controls at least 44px; the two columns stack into one column on
+   narrow phone screens so nothing squeezes or scrolls sideways.
+
+17. Live users — the live user checker (new): a full-width card under the grid
+   where the sender sees who is active on the server. When a receiver enters
+   their name on the receiver page and taps “Save name”, the name is sent to
+   this card and the receiver appears in the list as Active now, with their
+   local IP, what they are doing (viewing / downloading files) and when they
+   joined; the count at the top always shows how many are active. The card
+   carries its own “Live user checker” switch — ON shows the list, OFF hides
+   it completely and the sender can no longer see who is active — plus a
+   “Check now” button that re-checks and stamps the time. Saving the same
+   name again refreshes that receiver's row instead of adding a duplicate.
+   Each row reads [user name] [access button] [active status]: the
+   receiver's name (with their IP and what they are doing) on the left, an
+   Access on / Access off button in the middle — tap it to allow or block
+   that receiver's access to the files; a blocked receiver's row greys out
+   and its status switches from “Active now” to “Access blocked” — and the
+   active status on the right. Because this is a static design preview, a
+   small “Preview — a receiver joins” box stands in for the receiver page:
+   type a name, tap “Save name”, and the name lands in the sender's list
+   straight away, exactly as the real Companion will push it.
+
+18. Blocking a receiver (new): turning a receiver's access off in Live users
+   blocks them on their own screen, not just in this list. The “What the
+   receiver sees” panel now carries a Receiver session strip, linked live to
+   Live users: pick a receiver there and you see their screen — in the
+   files, or at the login code section. Block the receiver you are
+   previewing while they are in the open folder and they are logged out at
+   once, back to the login code section, with a red notice: “You are blocked
+   by the sender. kindly ask the sender to unblock you.” While the block
+   stands, even the correct login code will not open the files — the unlock
+   is refused with the blocked notice, and the same stop applies to the
+   plain “Open files” button when no login code is active. Unblocking does
+   not drop them back into the files: they stay at the login code section
+   and must unlock again. A wrong code there keeps the approved wording —
+   “Kindly get the code form sender”. In the real Companion the server
+   enforces this per receiver, so a blocked receiver gets the same logged-
+   out, blocked-notice result on their own device.
+
+19. Deep strict check — bugs found and fixed (sender + receiver): a full pass
+   over both sides found and fixed these functional bugs. (1) Sharing OFF
+   did nothing to the receiver — it only recoloured the sender's card; a
+   receiver already in the files stayed in and could still download. Now
+   sharing OFF logs every receiver out, hides the login gate behind a
+   “Sharing is off” notice, and blocks both download buttons until sharing
+   is back on (which leaves receivers at the login gate, not back in the
+   files). (2) The login code could be bypassed in the preview — the
+   receiver session opened already inside the files on page load, and
+   switching the previewed receiver dropped them straight into the files
+   too; both now start at the login gate, and turning the login code ON
+   sends anyone already browsing back to the gate. (3) “Download ticked” and
+   the receiver's ticked count only covered the folder being previewed —
+   files ticked in a second shared folder silently vanished from the count
+   and the download; both now cover every main folder. (4) Download order
+   broke with two folders — main/sub groups interleaved (main, sub, main,
+   sub); the whole download is now re-ordered as one list: all main-folder
+   files first, then all sub-folder files. (5) A receiver could be stranded
+   inside a sub-folder the sender had just unticked completely — they are
+   now walked back to the nearest still-shared folder. (6) Smaller fixes:
+   the blocked notice in the receiver preview now matches the approved
+   wording exactly; unlocking when the sender has set no code says so
+   instead of blaming a wrong code; the auto-join IP for Live users can no
+   longer run past 255; the length toast no longer calls a letters/symbols
+   code “digits”; and two dead helper functions and a dead demo-button hook
+   left over from earlier versions were removed. Everything else — copy
+   link/code fallbacks, tick/partial states, the size filter, path
+   boxes/text toggle, sort, multi-folder tabs, and the stale-download-list
+   guard — was re-tested and held.
+
+
+========================================================================
+B. SENDER PAGE (COMPANION) - HOW EVERY FUNCTION WORKS
+========================================================================
+
+The sender page is the Companion running on the sender's PC. It is served at
+the share link (for example http://192.168.0.134:8000/) and anyone on the
+same Wi-Fi who opens the link sees the share. Layout, top to bottom: header
+with the horizontal M1Share logo (dark navy M, bright blue 1 inside it, blue
+swoosh ring, "Share" in dark navy beside the mark) and the sharing status
+badge; a top row with the merged share-link + login-code card on the left
+and the Sharing on/off card on the right; the Sharing folder browser full
+width; the "What the receiver sees" dropdown panel; the Live users card; the
+Details dropdown; and the About us card at the bottom (only "M1 Share -
+created by Md. Mobasherul Hasan", his name linked to his LinkedIn, and the
+copyright line).
+
+1. Share link (the hero).
+The share link is the biggest text on the page, with one big green Copy
+button, readable from across a room. "Copy link" copies the share link
+(http://192.168.0.134:8000/) to the clipboard. Copying tries the synchronous
+textarea + execCommand path first (it works on a real click inside iframes),
+then the async Clipboard API; if both are blocked, the link text is selected
+on the page so Ctrl+C or long-press Copy works. Under Copy link sits a
+"Visit M1share" button that opens https://m1share.netlify.app/ in a new tab
+- the public M1Share site, not the share link. Beneath it, the bracketed
+note "[ send the link to all active users ]" is set in a warm amber-red -
+noticeable like a reminder, but softer than pure red.
+
+2. Login code (the security gate).
+Inside the share-link card, the "Add login code" area at the bottom is the
+security gate for the shared files. When it is ON, anyone opening the link
+must enter the code before they can see or download anything - the short
+line under the code in the dark panel says exactly that. The area works as a
+dropdown tied to its switch: switch ON and the settings open below it;
+switch OFF and the settings hide completely. Its OFF colour is a warm amber-
+red (yellow-red) - badge and switch both turn that colour - deliberately
+different from the sharing switch's pure red OFF, so the two OFF states
+never get mixed up. The sender picks 3, 4 or 5 digit length (or Custom to
+type their own code), taps "Generate new code" for a fresh one, and the code
+shows big and bold in JetBrains Mono inside a dark code panel, with its own
+Copy code button. If there is no login code, the receiver page shows no
+login-code area at all - just "Open files". Turning the login code ON sends
+anyone already browsing the files back to the login gate.
+
+3. What the code is made of.
+Under the code-length options, three small tick boxes sit side by side,
+names only - Digit (ticked by default), Alphabet, and Special Character -
+with no extra explanation text. A dashed line separates them from the length
+options above, and the whole character area is tinted blue (the length
+options stay green) so the two groups never look the same. Tick or untick
+any of them and, while a 3 / 4 / 5 length is selected, a fresh code is
+generated from the new mix straight away, always containing at least one
+character from each ticked type; at least one box must stay ticked. Letters
+are uppercase only: generated codes never use lowercase, and in Custom mode
+a lowercase letter typed is turned uppercase automatically.
+
+4. Sharing on / off switch.
+The Status row in the Sharing on/off card carries the same badge + switch as
+the login code area. Flip it and sharing turns OFF (the card badge and the
+header badge both switch to a red OFF, the switch itself turns red too, and
+the note under the rows says receivers can't download); flip it back and
+sharing is ON again. Switching sharing OFF closes the share for every
+receiver at once: anyone in the files is logged out and sees that sharing is
+off, and nothing can be opened or downloaded until it is switched back on
+(receivers stay at the login gate, not back in the files).
+
+5. Folder browser (Linux Mint / Nemo style).
+The Sharing card is a file manager like the Mint (Nemo) screens. There is no
+separate folder-showing strip: the main folder is the first box in the path,
+and you move between folders from the path itself - main to sub, sub back to
+main, and down the trail again. A previous (back) button, the path, and a
+sort dropdown run left to right - sort by name (A to Z / Z to A), modified
+time (O to N / N to O) or size (S to B / B to S), labels kept short on
+purpose. The path is the "Path" control: it shows Linux-style folder boxes
+by default - [Main folder] [sub folder] - and clicking the path area itself
+replaces the boxes with the text path as it is typed in CMD or PowerShell -
+Main folder/sub folder/ - clicking again brings the folder boxes back;
+tapping a single box still jumps straight to that folder. Inside a main
+folder you can open sub-folders - even folders inside folders - and share
+them whole, just like files. The list always shows folders first, then
+files, with a Mint-style status line at the bottom counting what is in the
+folder you are looking at.
+
+6. Tick boxes - pick exactly what gets shared.
+Every file row is a tick box - tap a file to include or leave it out. Files
+and folders alike carry a checkbox on the left. Ticking a folder auto-
+selects every file inside it, however deep. If only some files inside a
+folder are ticked, that folder's checkbox turns yellow-red (partial); when
+all its files are ticked, the checkbox is green - and the same colours roll
+up to the folders above it. Select all, Clear selection and Invert handle
+the whole list in one tap - Invert flips every file one by one, even inside
+folders, so a part-ticked folder swaps exactly which of its files are
+shared. The line above the files always shows how many files and how many GB
+will be shared.
+
+7. Size filter (custom big-files filter).
+The old fixed "Big files - 4 GB +" button is now custom: type any size, pick
+MB or GB, pick "& above" or "& below", and press Apply - every file on that
+side of the size gets selected (files on the other side are unticked), in
+the folder you are viewing, sub-folders included.
+
+8. More than one folder.
+"Add another folder" adds a second (or third) main folder to the share and
+opens it in the browser; every folder you add counts toward the shared total
+shown under the list. Once more than one folder is shared, a tab for each
+folder appears at the top of the browser - tap a tab to jump back to that
+folder and change its ticks (before, the first folder became unreachable
+once a second was added).
+
+9. Download mode - Single file or All files, no ZIP.
+The ZIP option was removed - packing files into a ZIP put extra load on the
+sender's PC. There are just two download options, picked by the sender in
+the Sharing on/off card: Single file (the files the receiver ticks download
+one by one, each as itself) or All files (every shared file as a separate
+file, main folder files first, then sub-folder files). The preview under the
+options shows exactly which button the receiver will see, and it updates as
+you tap - and the buttons in the "What the receiver sees" panel follow the
+same choice: the one the sender did not allow is disabled there.
+
+10. "What the receiver sees" panel (receiver preview).
+The full-width card under the grid is a dropdown panel - collapsed by
+default, tap its header to open it - and shows the share exactly as the
+receiver gets it: the main folder opens, sub-folders open inside it, and
+every file and folder carries a tick box with the same green / yellow-red
+states. It is fed by the sender's own folder tree, not a copy of it: untick
+a file in the Sharing section and it vanishes from the receiver preview
+immediately, re-tick it and it comes back - the receiver's own ticks in the
+preview are separate and never change what the sender shares. Pressing
+"Download ticked" lists what will actually arrive, following the backend
+rule: every ticked file downloads as itself - files ticked in the main
+folder and files ticked inside sub-folders alike, each listed with its
+folder path; nothing is ever zipped. "Download all files" lists every shared
+file the same way - across every main folder the sender added - each as its
+own separate download, in download order: the main folder's own files first,
+grouped at the top, then the sub-folder files below them. If any tick
+changes after a "You will download" list has been shown, the list clears
+itself instead of promising files that are no longer coming. The panel also
+carries a "Receiver session" strip, linked live to Live users (see 12).
+
+11. Live users (live user checker).
+A full-width card under the grid where the sender sees who is active on the
+server. When a receiver enters their name on the receiver page and taps
+"Save name", the name is sent to this card and the receiver appears in the
+list as Active now, with their local IP, what they are doing (viewing /
+downloading files) and when they joined; the count at the top always shows
+how many are active. The card carries its own "Live user checker" switch -
+ON shows the list, OFF hides it completely and the sender can no longer see
+who is active - plus a "Check now" button that re-checks and stamps the
+time. Saving the same name again refreshes that receiver's row instead of
+adding a duplicate. Each row reads [user name] [access button] [active
+status]: the receiver's name (with their IP and what they are doing) on the
+left, an "Access on / Access off" button in the middle, and the active
+status on the right. Because this is a static design preview, a small
+"Preview - a receiver joins" box stands in for the receiver page: type a
+name, tap "Save name", and the name lands in the sender's list straight
+away, exactly as the real Companion will push it.
+
+12. Blocking a receiver.
+Turning a receiver's access off in Live users blocks them on their own
+screen, not just in this list. A blocked receiver's row greys out and its
+status switches from "Active now" to "Access blocked". The "What the
+receiver sees" panel carries a "Receiver session" strip, linked live to Live
+users: pick a receiver there and you see their screen - in the files, or at
+the login code section. Block the receiver you are previewing while they are
+in the open folder and they are logged out at once, back to the login code
+section, with a red notice: "You are blocked by the sender. kindly ask the
+sender to unblock you." While the block stands, even the correct login code
+will not open the files - the unlock is refused with the blocked notice, and
+the same stop applies to the plain "Open files" button when no login code is
+active. Unblocking does not drop them back into the files: they stay at the
+login code section and must unlock again. A wrong code there keeps the
+approved wording - "Kindly get the code form sender". In the real Companion
+the server enforces this per receiver, so a blocked receiver gets the same
+logged-out, blocked-notice result on their own device.
+
+13. Details dropdown.
+A full-width dropdown at the bottom of the page, just above About us. Its
+text is reproduced word for word in section C of this file.
+
+14. Big touch targets, responsive layout.
+Main buttons are at least 48px tall and smaller controls at least 44px; the
+two columns stack into one column on narrow phone screens so nothing
+squeezes or scrolls sideways.
+
+15. Router-dashboard styling.
+The cards follow the router status page Md. sent - flat light-grey rounded
+cards on a white page, a small line icon centred at the top of each card
+with its title centred underneath, small label / value rows with thin
+dividers inside, and small green ON badges for status, like the YES badges
+on that screen.
+
+
+========================================================================
+C. SENDER PAGE - "DETAILS" DROPDOWN (WORD FOR WORD)
+========================================================================
+
+This is the text inside the sender page's Details dropdown, exactly as it
+appears on the page.
+
+How it works. This page is served by the M1-share Companion running on this
+PC. Anyone on the same Wi-Fi who opens the link sees the main folder, can
+open its sub-folders, tick the files they want inside each one, and download
+them. Downloads can resume if they pause or drop. When a receiver saves
+their name on the receiver page, that name is sent here and appears in Live
+users, so you can see who is active on your server.
+
+Downloads. There is no ZIP option — packing files into a ZIP puts extra load
+on this PC, so every file downloads as itself, files inside sub-folders
+included. You choose above how receivers download: Single file — the files
+they tick download one by one, each as itself; or All files — every shared
+file downloads as a separate file, in order: the main folder's own files
+first, then the files inside its sub-folders.
+
+Safety. Only the folders you add on the left are shared, and only the files
+you tick — nothing else on this PC. When the login code is on, receivers
+must enter that code before they can see or download anything — turning the
+code on also sends anyone already browsing back to the login gate. Blocking
+a receiver in Live users cuts them off completely: the login code no longer
+opens the files for them, and if they are already browsing the folder they
+are logged out to the login code section at once, with a notice that they
+are blocked. Switching sharing off closes the share for every receiver at
+once: anyone in the files is logged out and sees that sharing is off, and
+nothing can be opened or downloaded until you switch it back on.
+
+
+========================================================================
+D. RECEIVER PAGE - HOW EVERY FUNCTION WORKS
+========================================================================
+
+The receiver page is what a receiver sees after opening the sender's share
+link (for example http://192.168.0.134:8000/) on the same Wi-Fi, in the same
+logo, colours and card style as the sender page. Layout: header with the
+stacked M1Share logo; the start screen; the file browser; the download
+preview area; the "How downloading works" dropdown; and the centre-aligned
+About us card (only "M1 Share - created by Md. Mobasherul Hasan", his name
+linked to his LinkedIn, and the copyright line).
+
+1. Receiver name first.
+The receiver types their name and taps "Save name". The name is sent to the
+sender's page and the receiver appears in the sender's Live users list. An
+empty name is rejected with an inline error; Enter works the same as tapping
+Save name. After saving, the page confirms it on screen ("Name saved - the
+sender can see ...") with a "Change name" option, and the files screen shows
+"You are downloading as ...". Going back to the start screen keeps the saved
+name. In this design preview the name stays on the page and a note says the
+real Companion sends it to the sender's screen; in the real Companion the
+name is sent to the sender page.
+
+2. Login-code check - or no code at all.
+After the name is saved, the page checks whether the sender has a login code
+active. If a code is active, the code box appears and the files stay locked
+until the code matches. A wrong code shows exactly "Kindly get the code form
+sender" (that wording is approved and must not change), the box shakes with
+a red error, and the files stay hidden. If no code is active, there is no
+login-code area at all - just the stacked logo, "Files shared with you", a
+short line saying no code is set, and one big green "Open files" button that
+opens the shared files. Going back to the start screen re-locks the files
+when a code is active.
+
+3. File browser.
+The same folder browser as the sender side (back button, path boxes, sort
+dropdown, folders first, green / yellow-red part-ticked boxes). The receiver
+opens the main folder, looks inside its sub-folders and ticks what to
+download.
+
+4. Ticking.
+Every file and folder has a tick box. Tick a folder and everything inside it
+is ticked; untick one file inside and the folder shows a part-ticked mark.
+Only ticked files can be downloaded.
+
+5. Download ticked.
+Only the ticked files download, one by one, in order: files ticked in the
+main folder first, then the ticked files inside sub-folders - each one as
+itself, with its folder path shown in the preview.
+
+6. Download all files.
+Every file in the share downloads, one by one, in the same order - main
+folder files first, then sub-folder files. Files inside sub-folders download
+as themselves too. There is no ZIP option: zipping would put extra load on
+the sender's PC. Which of these two buttons the receiver sees is decided by
+the sender's download choice on the sender page; the one the sender did not
+allow is disabled.
+
+7. Stay on this Wi-Fi / resume.
+Downloads come straight from the sender's PC over the router, not the
+internet. If a download stops, the sender may have turned sharing off or
+closed M1 Share - ask them to turn it on again, then try once more. Big
+files resume where they stopped when the browser supports it.
+
+8. Blocked by the sender.
+The sender can block you from their Live users list at any time. If you are
+already in the open folder, you are logged straight out to the login-code
+section and shown a notice that you are blocked. While you are blocked, the
+files stay closed - even if you enter the login code, they will not open.
+Ask the sender to unblock you. After unblocking you stay at the login-code
+section and must unlock again.
+
+9. "How downloading works" dropdown.
+A dropdown on the receiver page that explains the flow to the receiver. Its
+text is reproduced word for word in section E of this file.
+
+
+========================================================================
+E. RECEIVER PAGE - "HOW DOWNLOADING WORKS" (WORD FOR WORD)
+========================================================================
+
+This is the text inside the receiver page's "How downloading works"
+dropdown, exactly as it appears on the page.
+
+Your name, then the code check. You type your name and tap Save name — the
+name is sent to the sender’s page, and you appear in the sender’s Live users
+list as active while you are on the share. The page then checks whether the
+sender has a login code active: if they do, you enter the code before the
+files open — a wrong code shows “Kindly get the code form sender”; if they
+don’t, you just tap Open files.
+
+Blocked by the sender. The sender can block you from their Live users list
+at any time. If you are already in the open folder, you are logged straight
+out to the login-code section and shown a notice that you are blocked. While
+you are blocked, the files stay closed — even if you enter the login code,
+they won’t open. Ask the sender to unblock you.
+
+Ticking. Every file and folder has a tick box. Tick a folder and everything
+inside it is ticked; untick one file inside and the folder shows a part-
+ticked mark. Only ticked files can be downloaded.
+
+Download ticked. Only the ticked files download, one by one, in order: files
+ticked in the main folder first, then the ticked files inside sub-folders —
+each one as itself, with its folder path shown in the preview.
+
+Download all files. Every file in the share downloads, one by one, in the
+same order — main folder files first, then sub-folder files. Files inside
+sub-folders download as themselves too. There is no ZIP option: zipping
+would put extra load on the sender’s PC.
+
+Stay on this Wi-Fi. Downloads come straight from the sender’s PC over your
+router, not the internet. If a download stops, the sender may have turned
+sharing off or closed M1 Share — ask them to turn it on again, then try once
+more. Big files resume where they stopped when your browser supports it.
+
+This preview only simulates. On this design page the two buttons run a
+progress preview — nothing is downloaded or saved. The real downloading
+happens in the Companion server once it serves this page.
+
+
+========================================================================
+F. DEEP STRICT CHECK - BUGS FOUND AND FIXED (SENDER + RECEIVER)
+========================================================================
+
+A full pass over both sides found and fixed these functional bugs. This is
+the record from the sender design notes, item 19.
+
+(1) Sharing OFF did nothing to the receiver - it only recoloured the
+sender's card; a receiver already in the files stayed in and could still
+download. Now sharing OFF logs every receiver out, hides the login gate
+behind a "Sharing is off" notice, and blocks both download buttons until
+sharing is back on (which leaves receivers at the login gate, not back in
+the files).
+
+(2) The login code could be bypassed in the preview - the receiver session
+opened already inside the files on page load, and switching the previewed
+receiver dropped them straight into the files too; both now start at the
+login gate, and turning the login code ON sends anyone already browsing back
+to the gate.
+
+(3) "Download ticked" and the receiver's ticked count only covered the
+folder being previewed - files ticked in a second shared folder silently
+vanished from the count and the download; both now cover every main folder.
+
+(4) Download order broke with two folders - main/sub groups interleaved
+(main, sub, main, sub); the whole download is now re-ordered as one list:
+all main-folder files first, then all sub-folder files.
+
+(5) A receiver could be stranded inside a sub-folder the sender had just
+unticked completely - they are now walked back to the nearest still-shared
+folder.
+
+(6) Smaller fixes: the blocked notice in the receiver preview now matches
+the approved wording exactly; unlocking when the sender has set no code says
+so instead of blaming a wrong code; the auto-join IP for Live users can no
+longer run past 255; the length toast no longer calls a letters/symbols code
+"digits"; and two dead helper functions and a dead demo-button hook left
+over from earlier versions were removed.
+
+Everything else - copy link/code fallbacks, tick/partial states, the size
+filter, path boxes/text toggle, sort, multi-folder tabs, and the stale-
+download-list guard - was re-tested and held.
+
+
+========================================================================
+G. LIMITS - WHAT IS NOT BUILT YET
+========================================================================
+
+- Both pages are design previews only. Downloads are simulated; nothing is
+  really downloaded or saved from these files.
+
+- The real Companion .exe was not built here - the build was refused by the
+  safety system on 11 November 2026 with no specific reason given, on
+  Windows and on Android. Do not retry it unasked.
+
+- Receiver-name sending is not built: in the preview the name stays on the
+  receiver page; the real Companion server must send it to the sender's
+  Live users list.
+
+- Two-PC lab re-test is still needed: the pages have not been tested on two
+  real PCs on a real LAN link.
+
+- The live site m1share.netlify.app is v0.3 and is a different, newer build
+  from the one worked on here; its live list was stuck offline and its IP
+  auto-detect was empty when last checked (9 November 2026).
+
+- Approved wordings that must not change: wrong-code message "Kindly get the
+  code form sender"; blocked notice "You are blocked by the sender. kindly
+  ask the sender to unblock you."; About us credits only Md. Mobasherul
+  Hasan, his name linked to his LinkedIn; download choice is only "Single
+  file" / "All files" - no ZIP.
+
+- Logo: the real M1Share logo - dark navy M, bright blue 1 inside it in its
+  middle valley, blue swoosh / orbit ring - horizontal for headers,
+  stacked where a square mark fits; original colours, white background; do
+  not recolour it or put it on a dark background.
+
+--- END OF FILE ---
