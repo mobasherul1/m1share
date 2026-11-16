@@ -1,0 +1,511 @@
+M1 SHARE  -  ULTRA DETAILED GUIDE
+Version 1.0.0   |   Release v1.0.0   |   Windows (sender)
+Created by Md. Mobasherul Hasan  -  https://bd.linkedin.com/in/mobasherul1
+Source code:    https://github.com/mobasherul1/m1share
+License:        MIT (free to use, share, and build from source)
+
+
+================================================================
+PART 1  -  WHAT IS M1 SHARE?
+================================================================
+
+M1 Share is a small Windows app that turns your own PC into a
+private Wi-Fi file server. Once it's running, anyone whose phone,
+tablet or computer is on the SAME Wi-Fi / router can open a simple
+link in their browser, pick the files they want, and download them
+straight from YOUR computer - with no internet, no cloud account,
+no upload, and no USB drive.
+
+Think of it as the easiest way to hand files from one PC to other
+devices in the same room, the same office floor, or the same home -
+especially when the files are too big for email, too many for a
+chat app, or too private to put on someone else's cloud.
+
+
+================================================================
+PART 2  -  WHAT IT DOES (FULL FEATURE LIST)
+================================================================
+
+THE SENDER APP WINDOW (the small "M1 Share" window that opens)
+-------------------------------------------------------------
+- Shows your share link (http://<your-PC-ip>:8000/) - big, clear,
+  and ready to send to people.
+- "Copy link" button copies it to the clipboard.
+- One-click "Sharing ON / OFF" switch: off = nobody can open or
+  download anything, instantly.
+- "Add folder..." opens a normal Windows folder picker - pick any
+  folder and it becomes shared.
+- Live events list: names of people saving names, opening the
+  share, entering wrong codes, downloading files, blocking events -
+  shown as they happen.
+- If receivers can't connect, the window reminds you about Windows
+  Firewall.
+
+THE SENDER PANEL (the full control page at /sender - this PC only)
+------------------------------------------------------------------
+A full browser dashboard for running the share, organized as cards:
+
+Share link card
+- The same share link, a Copy link button, and an address / port
+  readout. A link to "Open the receiver page" in a new tab.
+- Login code section right below (see below).
+
+Login code section
+- Toggle the login code ON or OFF.
+- Code length choices: 3 digit, 4 digit, 5 digit, or Custom
+  (type your own, up to 8 characters).
+- Character sets to build the code: Digit / Alphabet / Special
+  character - any combination is allowed.
+- "Generate new code" makes a fresh random code instantly.
+- Receivers cannot open anything until they type the code.
+  (Wrong codes are rate-limited: 10 wrong tries per 5 minutes per
+  device, plus a global ceiling.)
+
+Sharing card (the file browser)
+- Lists every folder you added as "main folder" chips - switch
+  between them with one click.
+- Navigable folder tree: open folders, go back, breadcrumb path.
+- Every file and folder has a TICK BOX. Ticked = shared. Unticked
+  = invisible to receivers. Unticking a folder unticks everything
+  inside it; mixed selection shows a partial mark.
+- Select all / Clear selection / Invert for the current folder.
+- "Select files of size" - tick every file above (or below) any
+  size, in MB or GB (e.g. "share everything above 4 GB" or
+  "share everything below 500 MB").
+- Selection summary: how many files of how many, how many GB, and
+  how many folders are fully included.
+
+Sharing on/off card
+- Status row with a switch that works the same as the app window.
+- "Receiver options" for downloads:
+    Single file  - receivers only get "Download ticked"
+                   (the files they ticked, one by one).
+    All files    - receivers only get "Download all files"
+                   (everything shared, main-folder files first).
+
+Live user checker
+- Every receiver who saves their name on the receiver page shows
+  up here with their IP address, what they're doing ("Viewing
+  files", "Downloading files"), and whether they're active now
+  or idle.
+- Block / unblock button next to each name. A blocked receiver is
+  booted out immediately and even the right code will not let them
+  back in until you unblock them.
+- "Check now" refreshes the list on demand.
+
+How receivers connect + Recent activity
+- A 4-step how-to for the people you share with.
+- A rolling log of recent events (who joined, who downloaded what).
+- About us - links to the author, the GitHub repo (for the latest
+  updates), and the release version.
+
+THE RECEIVER PAGE (what your friends/family see at the link)
+-------------------------------------------------------------
+Designed so a non-technical person can use it without help:
+- They open the link in ANY browser (phone, laptop, tablet, any OS).
+- Enter their name - the sender sees it appear in the Live user
+  checker.
+- If you set a login code, they see a code box next - wrong code =
+  "Kindly get the code form sender". Right code = files open.
+- Files screen: a folder browser of everything YOU ticked.
+  Navigate with back button and breadcrumb, sort by name / size /
+  date.
+- Every file/folder has a tick box. Untick what they don't want.
+- "Download ticked" or (if you set All files mode) "Download all
+  files". Downloads arrive ONE FILE AT A TIME, main folder files
+  first, then sub-folder files - every file arrives as itself.
+  There is NO ZIP option, ever.
+- Bottom of the page: an "How downloading works" guide, an About
+  section, and the release version.
+- If you turn sharing OFF while they're browsing, they are booted
+  to a "Sharing is off" screen automatically. The page watches and
+  lets them back in when it comes back.
+- If you block them or turn the login code ON mid-visit, they are
+  booted to a re-login screen automatically.
+- No account, no app to install, no sign-up of any kind.
+
+DOWNLOAD ORDER (memorize this - it matters)
+-------------------------------------------
+Downloads always run in this order:
+  1. All files sitting directly in the main folder(s) first.
+  2. Then files inside sub-folders, one level deep.
+  3. Then files inside sub-sub-folders, and so on.
+Each file downloads as itself - never packed into an archive -
+and each file appears in the receiver's downloads with its own
+name and size.
+
+
+================================================================
+PART 3  -  WHY PEOPLE SHOULD USE IT
+================================================================
+
+1. YOUR FILES NEVER LEAVE YOUR NETWORK.
+   No cloud upload, no third-party server, no account on someone
+   else's platform. The receiver's browser talks directly to YOUR
+   PC over your own Wi-Fi. Nothing goes to the internet - it works
+   the same on a plane, in a basement, or on a locked-down office
+   network.
+
+2. IT IS FREE AND ASK-NOTHING.
+   Free (MIT license). No subscription, no sign-up, no QR code
+   pairing, no "scan this app" step. Open the exe, send the link.
+
+3. IT HANDLES HUGE FILES THAT EMAIL CANNOT.
+   Email attachment limits (20-25 MB) and chat-app limits vanish.
+   Share a 40 GB wedding-video folder or a 100 GB game dump the
+   same way you'd share a 2 MB PDF - the only limit is your Wi-Fi
+   speed and your PC's disk.
+
+4. PRIVACY BY DEFAULT.
+   Only the folders you explicitly add are visible, and only the
+   files you explicitly tick. Everything else on your PC is
+   invisible - not "blocked", simply absent from every list and
+   every URL.
+
+5. IT KEEPS THE SENDER IN CONTROL.
+   You see WHO is connected and WHERE they are in the process. You
+   can block anyone mid-session. You can close the share with one
+   click. You can require a code. You can change the code at any
+   time - everyone is instantly sent back to the login gate.
+
+6. NOTHING TO INSTALL ON THE RECEIVER SIDE.
+   Receivers need nothing but a browser - no drivers, no apps,
+   no firewall entries, no accounts. Works on any device that can
+   open a web page.
+
+7. ONE PERSON PREPARES, EVERYONE BENEFITS.
+   One person runs the exe; 5, 10 or 50 people download from it at
+   once on the same Wi-Fi. Perfect for distributing course files,
+   installers, or party photos to a whole room.
+
+8. IT IS FAITHFUL TO OLD-SCHOOL FILE SHARING - BUT USABLE.
+   Windows' built-in network sharing is famously hostile (network
+   profiles, passwords, drive mapping). M1 Share gives you the same
+   outcome - "here are my files" - in three clicks.
+
+9. IT DOES NOT PHONE HOME.
+   No telemetry, no analytics, no update checks, no ads. The exe
+   is a small, auditable codebase (a single Python file plus two
+   web pages), open source under MIT.
+
+10. IT FITS REAL SCENARIOS OTHER TOOLS DO NOT.
+    - Moving game/mod files between PCs at a LAN event.
+    - Sharing a course pack with 40 students in one lab, on a
+      network with no internet.
+    - Giving a client the deliverables in "our office" without
+      hosting anything online.
+    - Sharing the family photo library while visiting relatives
+      who have no internet plan.
+    - Handing a friend the 15 GB folder you both can see on the
+      office Wi-Fi, without a USB drive.
+
+
+================================================================
+PART 4  -  WHAT IT IS BETTER THAN
+================================================================
+
+USB flash drive      No carrying, no virus risk, works for everyone
+                     at once, no drive capacity ceiling (beyond disk).
+Email attachments    No 20 MB limit, no spam-folder hunts, no
+                     "attachment too large" bounce.
+Cloud (Drive etc.)   No internet needed, no upload wait (it's
+                     already on the PC), no privacy concerns about
+                     where the files land, works offline entirely.
+AirDrop / ShareIt    Cross-platform by default (Windows sender, any
+                     browser receiver), no pairing screens, no app.
+SMB / network share  No drive mapping, no network-profile setup,
+                     no credentials dialog on the receiver.
+FTP server           No separate FTP client, no port forwarding
+                     config, no file-permission headaches.
+ZIP via USB/email    No ZIP building time, no archive extraction
+                     step - files arrive as normal files.
+
+
+================================================================
+PART 5  -  HOW TO USE IT  -  SENDER (THE PERSON WITH THE FILES)
+================================================================
+
+STEP 1 - Run it.
+  Double-click "M1 Share.exe". A small window opens with the logo,
+  your share link (e.g. http://192.168.0.110:8000/) and your
+  address + port.
+
+STEP 2 - If Windows Firewall asks.
+  Windows may show a firewall prompt the first time. Allow it
+  (private networks is fine). If receivers still can't connect,
+  allow "M1 Share" through Windows Defender Firewall, or run it
+  once as administrator. The window itself reminds you of this.
+
+STEP 3 - Pick what to share.
+  Click "Sender panel (control)" in the app window (or open
+  http://<your-pc-ip>:8000/sender in a browser ON THIS PC).
+  - Click "Add folder" (top of the Sharing area) OR use the
+    "Add folder..." button in the app window for a folder picker.
+  - The folder appears as a green chip at the top of the Sharing
+    card, and its files appear in the browser.
+  - To share MORE than one folder, repeat. Switch between them
+    with the chips.
+
+STEP 4 - Tick the files to share.
+  - Tick individual files/folders, or "Select all" for the folder
+    you're viewing.
+  - Use "Select files of size" if you want only big (or only
+    small) files shared.
+  - UNTICK any folder/file you DON'T want shared - receivers
+    will never see them.
+
+STEP 5 - Optionally set a login code.
+  - Toggle "Add login code" ON (it's on by default).
+  - Choose 3/4/5 digit or type your own Custom code, choose
+    digits/letters/special characters, tap "Generate new code", or
+    type one yourself (up to 8 characters, auto-uppercase).
+  - Send this code (out of band) to people you trust to see the
+    files. Without the code they cannot open or download anything.
+
+STEP 6 - Send the link.
+  Copy the link (button in the app window, or in the panel) and
+  send it over WhatsApp / email / text / say it out loud.
+
+STEP 7 - Watch who joins.
+  The app window shows a live events log. The panel's Live user
+  checker shows each person's name, IP, and status ("Active now"
+  or "Idle"). Block anyone you don't want - blocked users lose
+  access instantly.
+
+STEP 8 - When you're done.
+  Click "Sharing OFF" (app window or panel) or just close the
+  M1 Share window. Receivers will find the share closed; the
+  files never left your network and nothing was ever uploaded.
+
+OPTIONAL CHANGES YOU CAN MAKE ANY TIME
+--------------------------------------
+- Switch download mode: "Single file" (receivers download ticked
+  files) vs "All files" (receivers download everything shared).
+- Turn the login code on/off. Turning it ON instantly logs out
+  everyone already browsing.
+- Generate a brand-new code - nobody can unlock with the old one.
+- Block/unblock any receiver by name.
+- Add or remove shared folders at any time.
+- Change nothing else - your settings live in %APPDATA%\M1Share\
+  state.json and survive restarts.
+
+
+================================================================
+PART 6  -  HOW TO USE IT  -  RECEIVER (THE PERSON WITH THE BROWSER)
+================================================================
+
+STEP 1 - Connect to the same Wi-Fi / router.
+  This is the ONLY requirement. No internet needed.
+
+STEP 2 - Open the link the sender gave you.
+  Type it into any browser (Chrome, Edge, Safari, Firefox, the
+  browser on your phone - anything).
+
+STEP 3 - Enter your name.
+  Any name you like, up to 40 characters. The sender sees it in
+  their Live user checker - that's how they know it's you.
+
+STEP 4 - (If the sender set a code) enter the login code.
+  Type it EXACTLY as given (letters are case-insensitive).
+  Wrong code = "Kindly get the code form sender".
+  Right code = the files open.
+
+STEP 5 - Browse and tick what you want.
+  - Open folders, go back, sort by name/size/date.
+  - Tick only the files you want, or tick whole folders (everything
+    inside ticks automatically).
+  - The summary at the bottom shows exactly what you'll get
+    ("N files ticked - X GB").
+
+STEP 6 - Download.
+  - Tap "Download ticked" (or "Download all files" in All files
+    mode).
+  - Files download ONE AT A TIME, in order: main-folder files
+    first, then sub-folder files. Every file saves as itself -
+    no ZIP extraction step.
+  - Your browser may ask "allow multiple downloads?" - choose
+    Allow.
+  - Big files: keep the tab open until they finish. If one fails,
+    just tap it again (note: there is no pause/resume - see FAQ).
+
+STEP 7 - Done. You can close the tab whenever you like - your ticks are only
+  remembered by this tab. The sender keeps seeing your name as "Idle" in the
+  Live user checker until the session expires.
+
+IF SOMETHING FEELS WRONG
+------------------------
+- "Sharing is off" screen: the sender closed the share. Ask them
+  to turn it back on, then sign in again (the page recovers by
+  itself when sharing returns).
+- "You are blocked...": the sender blocked you. Kindly ask them
+  to unblock you.
+- "Your session was closed": the sender turned the login code ON
+  (or generated a new one). Sign in again with the new code.
+- "Too many wrong codes": wait 5 minutes, then try again - the
+  sender can see every wrong attempt in their log.
+- Download 403/"not shared": the sender unticked that file while
+  your browser asked for it. Ask them to re-tick it.
+
+
+================================================================
+PART 7  -  FAQ
+================================================================
+
+Q: Does it work without the internet?
+A: Completely. Nothing is uploaded anywhere. The receiver's
+   browser talks directly to the sender's PC over Wi-Fi/router.
+
+Q: Can receivers see OTHER files on my PC?
+A: Never. Only the folders you add appear, and only the files you
+   tick inside them. Unticked files are invisible at the network
+   level.
+
+Q: How many people can download at once?
+A: The server handles dozens of connections at the same time.
+   A small Wi-Fi network saturates long before the app does.
+
+Q: Is there a size limit?
+A: No file size limit and no total limit. Speed = your Wi-Fi's
+   speed. 100 GB total is fine.
+
+Q: Does the sender's PC need to stay on?
+A: The sender's PC and the M1 Share window must stay open and on
+   while people download. Close the window and the share ends.
+
+Q: What if two main folders are shared - how do receivers switch?
+A: Multiple main folders show as a row of chips above the file
+   browser on the receiver page (only when more than one is
+   shared). Tap a chip to switch folders instantly.
+
+Q: Why does the receiver page say "Release v1.0.0"?
+A: That's this software's version. See the version resource in the
+   exe's Properties and the About section on both pages.
+
+Q: Can a blocked user get back in with a different name?
+A: Yes - blocking is by name, by design (there are no accounts).
+   If someone you block re-enters with a new name, add their new
+   name to the block list too. Block by name is a convenience,
+   not a fence.
+
+Q: Are my files uploaded anywhere if I turn sharing on?
+A: Never - not by the app, not by the code. Sharing only exposes
+   the ticked files to devices on your own Wi-Fi.
+
+Q: Does the sender's PC get a firewall warning?
+A: Possibly the first run. Allow it once and Windows won't ask
+   again. (No admin needed just to run the app - but the first
+   firewall allowance may ask for it.)
+
+Q: What happens to an in-flight download if the sender hits Sharing OFF?
+A: Bytes already being sent finish arriving, but every new request
+   is refused after that point. Receivers see the "Sharing is off"
+   screen immediately.
+
+Q: Can receivers resume a half-downloaded file?
+A: No - this server does not implement HTTP range requests. If a
+   download dies halfway, download it again from the start. (Most
+   modern browsers retry automatically; big files just need a tap.)
+
+Q: Does the file list refresh live when I change files on disk?
+A: No - the tree rebuilds on every tick/untick/add/remove and on
+   restart. Edits made on disk while the app is running show up
+   after your next selection change or restart. (By design: live
+   watching of huge trees would be slow.)
+
+Q: Which ports does it use?
+A: One port, default 8000. If 8000 is busy it tries 8001, 8002...
+   up to 8010. The app window always shows the real address + port.
+
+Q: Where are my settings stored?
+A: %APPDATA%\M1Share\state.json - shared folders, tick state,
+   login code, settings. Delete it to reset everything (a fresh
+   code is generated on next run). If it ever becomes unreadable,
+   the app keeps a copy as state.json.bad and starts fresh.
+
+Q: The antivirus/SmartScreen grumbles about the exe.
+A: The exe is new and unsigned. Windows SmartScreen shows
+   "unknown publisher" for brand-new unsigned software. The code
+   is open source on GitHub - build it yourself in one command
+   (see the repo) and verify it. A signed release lands on the
+   GitHub Releases page once the project's SignPath approval
+   completes.
+
+
+================================================================
+PART 8  -  SECURITY & PRIVACY MODEL (what to rely on - and what not to)
+================================================================
+
+WHAT PROTECTS YOU
+- LAN only. It never punches a hole in your router, no port
+  forwarding, no UPnP, no internet exposure.
+- Sender panel (/sender and /api/sender/*) answers from THIS PC
+  ONLY - the rest of the Wi-Fi cannot reach it.
+- Login code with rate limiting (10 wrong tries / 5 min / device,
+  plus a global ceiling), and it relocks everyone the moment it's
+  turned on.
+- Sessions are random tokens that expire after 12 hours; blocking
+  a name drops their sessions instantly.
+- Only ticked files are downloadable - server-side enforced, not
+  just hidden in the browser.
+- Symlinks/junctions can't escape the shared folder.
+- No telemetry, no logs leaving the PC; logs rotate at 300 events.
+
+WHAT TO KNOW
+- Anyone ON YOUR WI-FI with the link can request the ticked files
+  (plus the code, if one is set). Trust your network, or trust the
+  files you tick.
+- Blocking is name-based; a blocked person can rejoin under a new
+  name. Combine blocking with the login code for real exclusion.
+- Unticking something while someone is downloading it does not
+  stop that transfer.
+- There is no per-user download history beyond the events log.
+- The exe is unsigned until the SignPath release is published.
+
+
+================================================================
+PART 9  -  TECHNICAL DETAILS (for anyone curious)
+================================================================
+
+- Language: Python 3 (standard library only - no framework, no
+  servers installed, no dependencies except Pillow for the GUI
+  logo).
+- Server: ThreadingHTTPServer with a socket idle timeout and a
+  64-thread ceiling, HTTP/1.1.
+- Downloads: streamed from disk with a 128 KB buffer, fstat size
+  in Content-Length, Content-Disposition with UTF-8 filename
+  fallback.
+- State: JSON at %APPDATA%\M1Share\state.json (atomic replace
+  writes, checksummed-ish via .tmp + os.replace, backup on corrupt).
+- UI: tkinter window (sender control) + two single-page
+  browser apps (receiver page + sender panel), vanilla JS, no
+  build step.
+- Build: PyInstaller --onefile --windowed; GitHub Actions builds
+  and smoke-tests (HTTP bootstrap check) on windows-latest.
+- Code size: ~1,300 lines of Python + ~1,700 lines of HTML/CSS/JS
+  per page. Small enough to read in an afternoon.
+- Portability of sharing: the exe carries its own docs; state is
+  per-PC, no registry pollution (a single folder under %APPDATA%).
+
+
+================================================================
+PART 10  -  RELEASE INFORMATION / AUTHOR / LICENSE
+================================================================
+
+Name ............ M1 Share
+Version ......... 1.0.0 (shows as "Release v1.0.0" inside the app)
+Platform ........ Windows 10/11 for the sender; any modern browser
+                  on any OS for receivers
+Author .......... Md. Mobasherul Hasan
+                  bd.linkedin.com/in/mobasherul1
+GitHub .......... https://github.com/mobasherul1/m1share
+                  (source code, build instructions, latest releases)
+License ......... MIT License (see LICENSE in the repo)
+Price ........... Free
+Copyright ....... © 2026 Md. Mobasherul Hasan. All rights reserved.
+
+How to cite: M1 Share (free LAN file sharing over Wi-Fi) by
+Md. Mobasherul Hasan. https://github.com/mobasherul1/m1share
+
+================================================================
+                 END OF GUIDE  -  M1 SHARE v1.0.0
+================================================================
